@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 12 84 52">
+  <path fill="#8DC63F" transform="rotate(-75 50 55)" d="M50 55 C 46 42 43 30 36 20 C 46 26 51 38 52 50 Z"/>
+  <path fill="#2BA8A0" transform="rotate(-38 50 55)" d="M50 55 C 46 42 43 30 36 20 C 46 26 51 38 52 50 Z"/>
+  <path fill="#35A8E0" d="M50 55 C 46 42 43 30 36 20 C 46 26 51 38 52 50 Z"/>
+  <path fill="#7C5CA8" transform="rotate(38 50 55)" d="M50 55 C 54 42 57 30 64 20 C 54 26 49 38 48 50 Z"/>
+  <path fill="#F7941D" transform="rotate(75 50 55)" d="M50 55 C 54 42 57 30 64 20 C 54 26 49 38 48 50 Z"/>
+</svg>
