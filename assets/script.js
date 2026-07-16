@@ -2,6 +2,8 @@
 (function () {
   'use strict';
 
+  var isEnglish = document.documentElement.lang === 'en';
+
   // Header state on scroll
   var header = document.getElementById('siteHeader');
   function onScroll() {
@@ -41,6 +43,44 @@
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  // Gallery auto-loader: shows images/1.jpg, 2.jpg... (or .png/.webp)
+  // as soon as they exist in the images/ folder. Numbering must be
+  // sequential starting from 1; loading stops at the first gap.
+  var galleryGrid = document.getElementById('galleryGrid');
+  var gallerySection = document.getElementById('gallery');
+  if (galleryGrid && gallerySection) {
+    var base = (isEnglish ? '../' : '') + 'images/';
+    var exts = ['jpg', 'jpeg', 'png', 'webp'];
+    var MAX_PHOTOS = 12;
+
+    var loadPhoto = function (n) {
+      if (n > MAX_PHOTOS) return;
+      var tryExt = function (i) {
+        if (i >= exts.length) return; // gap found — stop the sequence
+        var img = new Image();
+        var src = base + n + '.' + exts[i];
+        img.onload = function () {
+          img.alt = isEnglish
+            ? 'Photo from Naderia Farm'
+            : 'صورة من مزرعة النادرية';
+          img.loading = 'lazy';
+          var link = document.createElement('a');
+          link.href = src;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.appendChild(img);
+          galleryGrid.appendChild(link);
+          gallerySection.hidden = false;
+          loadPhoto(n + 1);
+        };
+        img.onerror = function () { tryExt(i + 1); };
+        img.src = src;
+      };
+      tryExt(0);
+    };
+    loadPhoto(1);
   }
 
   // Current year
