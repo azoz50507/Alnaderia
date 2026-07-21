@@ -1090,4 +1090,116 @@ html[dir="rtl"] .marquee-track { animation-name: marquee-rtl; }
     transition-duration: .01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .consent { transition: none; }
+}
+
+/* ---------- Consent banner ---------- */
+.consent {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 120;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem 1.4rem;
+  padding: 1rem 1.4rem;
+  background: rgba(11, 46, 29, .97);
+  color: #EAF3E7;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 -12px 44px -14px rgba(0, 0, 0, .5);
+  transform: translateY(115%);
+  transition: transform .5s cubic-bezier(.7, 0, .25, 1);
+}
+.consent.in { transform: none; }
+.consent p { font-size: .92rem; line-height: 1.85; max-width: 640px; margin: 0; }
+.consent p a { color: #FFC46B; text-decoration: underline; }
+.consent-btns { display: flex; gap: .6rem; flex: none; }
+.consent-btns button {
+  padding: .6rem 1.5rem;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: .9rem;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.consent .c-yes {
+  color: #fff;
+  background: linear-gradient(135deg, var(--orange), var(--flame));
+  box-shadow: 0 8px 22px -8px rgba(241, 90, 36, .5);
+}
+.consent .c-yes:hover { transform: translateY(-2px); }
+.consent .c-no {
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .28);
+}
+.consent .c-no:hover { background: rgba(255, 255, 255, .2); }
+
+/* ---------- Live analytics lab (debug overlay, owner only) ---------- */
+.ndbg {
+  position: fixed;
+  bottom: 1.4rem;
+  inset-inline-end: 1.4rem;
+  z-index: 130;
+  width: 280px;
+  max-width: calc(100vw - 2.8rem);
+  background: rgba(15, 35, 24, .95);
+  color: #EAF3E7;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 18px;
+  box-shadow: 0 24px 56px -18px rgba(0, 0, 0, .55);
+  backdrop-filter: blur(12px);
+  font-family: var(--font-body);
+  overflow: hidden;
+  animation: ndbg-in .5s cubic-bezier(.2, .8, .3, 1.1);
+}
+@keyframes ndbg-in { from { opacity: 0; transform: translateY(20px) scale(.96); } to { opacity: 1; transform: none; } }
+.ndbg-h {
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+  padding: .75rem .95rem;
+  background: linear-gradient(90deg, rgba(247, 148, 29, .18), rgba(43, 168, 160, .14));
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+.ndbg-h b { font-size: .92rem; }
+.ndbg-h span { font-size: .66rem; color: #9FE6AE; white-space: nowrap; }
+.ndbg-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: .35rem;
+  padding: .75rem .7rem .4rem;
+}
+.ndbg-stats div { text-align: center; }
+.ndbg-stats b { display: block; font-size: 1.05rem; font-weight: 800; color: #FFC46B; line-height: 1.2; }
+.ndbg-stats span { font-size: .6rem; color: rgba(255, 255, 255, .6); }
+.ndbg-top {
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+  margin: .2rem .7rem .5rem;
+  padding: .5rem .7rem;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 10px;
+  font-size: .72rem;
+}
+.ndbg-top span { color: rgba(255, 255, 255, .65); }
+.ndbg-top b { color: #7CD98E; }
+.ndbg-feed { max-height: 156px; overflow-y: auto; padding: 0 .7rem; }
+.nrow {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .7rem;
+  padding: .3rem 0;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+.nrow .nt { color: rgba(255, 255, 255, .4); font-variant-numeric: tabular-nums; flex: none; }
+.nrow .nn { color: #7CD98E; font-weight: 700; }
+.nrow .nd { color: rgba(255, 255, 255, .7); margin-inline-start: auto; text-align: end; }
+.ndbg-note {
+  padding: .55rem .95rem;
+  font-size: .62rem;
+  color: rgba(255, 255, 255, .42);
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  text-align: center;
+}
+@media (max-width: 640px) {
+  .ndbg { width: calc(100vw - 2rem); bottom: 1rem; }
+  .consent { flex-direction: column; text-align: center; padding: 1.1rem 1.2rem; }
+  .consent-btns { width: 100%; justify-content: center; }
 }
