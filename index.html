@@ -24,6 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/cinematic.css">
 
   <script type="application/ld+json">
   {
@@ -66,6 +67,22 @@
 </head>
 <body>
 
+  <!-- ===== Preloader ===== -->
+  <div class="preloader" id="preloader">
+    <div class="pre-inner">
+      <img class="pre-logo" src="assets/logo.webp" alt="مزرعة ومشاتل النادرية" width="884" height="735">
+      <div class="pre-bar"><i></i></div>
+      <div class="pre-num">٠٪</div>
+    </div>
+  </div>
+
+  <!-- ===== Cursor / rail ===== -->
+  <div class="cursor" aria-hidden="true"><span class="cur-dot"></span><span class="cur-ring"></span></div>
+  <div class="progress-rail" aria-hidden="true">
+    <div class="rail-line"><i id="railFill"></i></div>
+    <span class="rail-label" id="railLabel">الرئيسية</span>
+  </div>
+
   <!-- ===== Header ===== -->
   <header class="header" id="siteHeader">
     <div class="container">
@@ -73,51 +90,66 @@
         <img src="assets/logo.webp" alt="شعار مزرعة ومشاتل النادرية" width="884" height="735">
       </a>
 
-      <nav class="nav" aria-label="التنقل الرئيسي">
-        <a href="#home">الرئيسية</a>
-        <a href="#story">قصتنا</a>
-        <a href="#products">منتجاتنا</a>
-        <a href="#faq">الأسئلة الشائعة</a>
-        <a href="#contact">تواصل معنا</a>
-      </nav>
-
       <div class="header-actions">
         <a class="lang-switch" href="en/" lang="en" dir="ltr">EN</a>
-        <a class="header-cta" href="https://wa.me/966503184880?text=السلام%20عليكم،%20أرغب%20بالاستفسار%20عن%20منتجات%20مزرعة%20النادرية" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.25-1.38A9.9 9.9 0 1 0 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.5.04-1.12.06-1.8-.11a11.6 11.6 0 0 1-1.64-.6c-2.88-1.25-4.76-4.15-4.9-4.34-.15-.2-1.18-1.57-1.18-3s.75-2.13 1-2.42c.26-.3.57-.37.76-.37h.55c.18 0 .41-.06.64.5.24.57.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.14.31-.29.48-.14.17-.3.37-.44.5-.14.15-.3.3-.13.6.17.28.74 1.22 1.6 1.98 1.1.98 2.02 1.28 2.3 1.43.3.14.46.12.63-.07.17-.2.72-.84.92-1.13.2-.3.39-.24.65-.15.27.1 1.7.8 2 .95.28.14.48.22.55.34.07.12.07.68-.17 1.35z"/></svg>
-          اطلب الآن
-        </a>
-        <button class="burger" id="burgerBtn" aria-label="القائمة" aria-expanded="false"><span></span></button>
+        <button class="menu-btn" id="menuBtn" aria-label="القائمة" aria-expanded="false" aria-controls="navOverlay">
+          <span class="mb-txt">القائمة</span>
+          <span class="mb-ico" aria-hidden="true"><i></i><i></i></span>
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- mobile nav -->
-  <nav class="mobile-nav" id="mobileNav" aria-label="قائمة الجوال">
-    <a href="#home">الرئيسية</a>
-    <a href="#story">قصتنا</a>
-    <a href="#products">منتجاتنا</a>
-    <a href="#faq">الأسئلة الشائعة</a>
-    <a href="#contact">تواصل معنا</a>
-    <a href="en/" lang="en" dir="ltr" style="text-align:center">English — EN</a>
-    <a class="btn btn-wa" href="https://wa.me/966503184880?text=السلام%20عليكم،%20أرغب%20بالاستفسار%20عن%20منتجات%20مزرعة%20النادرية" target="_blank" rel="noopener">اطلب عبر واتساب</a>
-  </nav>
+  <!-- ===== Fullscreen navigation ===== -->
+  <div class="nav-overlay" id="navOverlay">
+    <div class="nav-inner container">
+      <nav class="nav-links" aria-label="التنقل الرئيسي">
+        <a href="#home"><em>٠١</em><span>الرئيسية</span></a>
+        <a href="#story"><em>٠٢</em><span>من نحن</span></a>
+        <a href="#products"><em>٠٣</em><span>منتجاتنا</span></a>
+        <a href="#region"><em>٠٤</em><span>عسير</span></a>
+        <a href="#faq"><em>٠٥</em><span>الأسئلة الشائعة</span></a>
+        <a href="#contact"><em>٠٦</em><span>تواصل معنا</span></a>
+      </nav>
+
+      <div class="nav-foot">
+        <div class="nf-col">
+          <small>جوال / واتساب</small>
+          <a href="tel:+966503184880"><b class="phone-ltr">0503184880</b></a>
+        </div>
+        <div class="nf-col">
+          <small>الموقع</small>
+          <b>منطقة عسير — أحد رفيدة</b>
+        </div>
+        <div class="nf-col">
+          <small>اللغة</small>
+          <a href="en/" lang="en" dir="ltr"><b>English</b></a>
+        </div>
+        <a class="btn btn-wa mag" href="https://wa.me/966503184880?text=السلام%20عليكم،%20أرغب%20بالاستفسار%20عن%20منتجات%20مزرعة%20النادرية" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.25-1.38A9.9 9.9 0 1 0 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.5.04-1.12.06-1.8-.11a11.6 11.6 0 0 1-1.64-.6c-2.88-1.25-4.76-4.15-4.9-4.34-.15-.2-1.18-1.57-1.18-3s.75-2.13 1-2.42c.26-.3.57-.37.76-.37h.55c.18 0 .41-.06.64.5.24.57.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.14.31-.29.48-.14.17-.3.37-.44.5-.14.15-.3.3-.13.6.17.28.74 1.22 1.6 1.98 1.1.98 2.02 1.28 2.3 1.43.3.14.46.12.63-.07.17-.2.72-.84.92-1.13.2-.3.39-.24.65-.15.27.1 1.7.8 2 .95.28.14.48.22.55.34.07.12.07.68-.17 1.35z"/></svg>
+          اطلب عبر واتساب
+        </a>
+      </div>
+    </div>
+    <div class="qatt"></div>
+  </div>
 
   <!-- ===== Hero ===== -->
   <section class="hero" id="home">
+    <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
     <div class="container">
       <div class="hero-text">
-        <span class="hero-kicker"><i></i> من قلب عسير — أحد رفيدة <i></i></span>
+        <span class="hero-kicker hero-fade" style="--fd:.15s"><i></i> من قلب عسير — أحد رفيدة <i></i></span>
         <h1>النادرية.. أصالة الأرض،<br>وجودة <span class="hl">الثمر</span>، وعبق الجنوب</h1>
-        <p class="hero-sub">من مرتفعات أحد رفيدة، نزرع بحب ونحصد بإتقان: تين طازج فاخر، قطين، عجينة تين، وشتلات — تحمل عبق الجنوب إلى بيتك.</p>
-        <div class="hero-ctas">
+        <p class="hero-sub hero-fade" style="--fd:.75s">من مرتفعات أحد رفيدة، نزرع بحب ونحصد بإتقان: تين طازج فاخر، قطين، عجينة تين، وشتلات — تحمل عبق الجنوب إلى بيتك.</p>
+        <div class="hero-ctas hero-fade" style="--fd:.9s">
           <a class="btn btn-wa" href="https://wa.me/966503184880?text=السلام%20عليكم،%20أرغب%20بالاستفسار%20عن%20منتجات%20مزرعة%20النادرية" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.25-1.38A9.9 9.9 0 1 0 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.5.04-1.12.06-1.8-.11a11.6 11.6 0 0 1-1.64-.6c-2.88-1.25-4.76-4.15-4.9-4.34-.15-.2-1.18-1.57-1.18-3s.75-2.13 1-2.42c.26-.3.57-.37.76-.37h.55c.18 0 .41-.06.64.5.24.57.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.14.31-.29.48-.14.17-.3.37-.44.5-.14.15-.3.3-.13.6.17.28.74 1.22 1.6 1.98 1.1.98 2.02 1.28 2.3 1.43.3.14.46.12.63-.07.17-.2.72-.84.92-1.13.2-.3.39-.24.65-.15.27.1 1.7.8 2 .95.28.14.48.22.55.34.07.12.07.68-.17 1.35z"/></svg>
             اطلب عبر واتساب
           </a>
-          <a class="btn btn-ghost" href="#products">اكتشف منتجاتنا</a>
+          <a class="btn btn-ghost mag" href="#products">اكتشف منتجاتنا</a>
         </div>
-        <div class="hero-chips">
+        <div class="hero-chips hero-fade" style="--fd:1.05s">
           <span class="chip-season"><i></i> موسم القطف بدأ — الإنتاج جارٍ الآن</span>
           <span>🌿 ١٠٠٪ طبيعي</span>
           <span>🤲 قطف وفرز يدوي</span>
@@ -153,13 +185,13 @@
     </div>
   </div>
 
-  <!-- ===== Story ===== -->
+  <!-- ===== Essence ===== -->
   <section class="story section" id="story">
     <div class="container">
       <div class="story-text">
         <span class="kicker">من نحن</span>
-        <h2 class="sec-title">قصة أرضٍ.. وقصة عائلة</h2>
-        <p class="reveal">في أحضان مرتفعات أحد رفيدة بمنطقة عسير، أسّس <strong>عبدالله عايض أبو درمان القحطاني «أبو عبدالكريم»</strong> مزرعة ومشاتل النادرية؛ مزرعة متخصصة بشجرة التين المباركة: نزرع بحب، ونحصد بإتقان، ونغلّف بعنايةٍ تليق بأجود ما تجود به أرض الجنوب المعطاءة.</p>
+        <h2 class="sec-title">نزرع بحب.. ونحصد بإتقان</h2>
+        <p class="reveal">مزرعة ومشاتل النادرية — متخصّصون في شجرة التين المباركة في مرتفعات أحد رفيدة بمنطقة عسير.</p>
         <div class="vm reveal" style="--d:.1s">
           <span class="vm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
           <div><b>رؤيتنا</b><span>أن نكون الاسم الأول في إنتاج وتوريد أجود التين ومنتجاته في المملكة.</span></div>
@@ -182,7 +214,7 @@
   <!-- ===== Region ===== -->
   <section class="region section" id="region">
     <div class="container">
-      <div class="sec-head center">
+      <div class="sec-head center mask-up">
         <span class="kicker">من قلب الجنوب</span>
         <h2 class="sec-title">عسير.. أرضٌ تسرّ الناظرين</h2>
         <p class="sec-sub">مقوّمات طبيعية جعلت مرتفعات أحد رفيدة موطنًا للثمار النادرة.</p>
@@ -225,7 +257,7 @@
   <!-- ===== Products ===== -->
   <section class="products section" id="products">
     <div class="container">
-      <div class="sec-head center">
+      <div class="sec-head center mask-up">
         <span class="kicker">منتجاتنا</span>
         <h2 class="sec-title">من الغصن.. إلى العلبة</h2>
         <p class="sec-sub">نتخصص باحتراف في شجرة التين المباركة — من الثمرة الطازجة إلى الشتلة.</p>
@@ -235,21 +267,21 @@
       <div class="prod-group">
         <h3 class="prod-group-title">الثمار والمنتجات التحويلية <em>حصاد الموسم</em></h3>
         <div class="prod-grid">
-          <article class="prod-card reveal" style="--accent:#7C5CA8">
+          <article class="prod-card reveal tilt" style="--accent:#7C5CA8">
             <span class="avail avail-now"><i></i>متوفر الآن — الموسم بدأ</span>
             <div class="prod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-3.5 2-6 4.6-6 8a6 6 0 0 0 12 0c0-3.4-2.5-6-6-8z"/><path d="M12 6c0-1.5.8-2.7 2-3.5"/><path d="M14 4.2c1.2-.7 2.7-.7 3.6-.1-.4 1.2-1.7 2-3.1 1.8"/></svg></div>
             <h3>التين الطازج</h3>
             <p>ثمار فاخرة تُقطف يدويًا عند نضجها المثالي، لضمان المذاق الغني والجودة العالية.</p>
             <div class="prod-order"><a href="https://wa.me/966503184880?text=السلام%20عليكم،%20أبغى%20أطلب:%20التين%20الطازج" target="_blank" rel="noopener" aria-label="اطلب التين الطازج عبر واتساب"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.25-1.38A9.9 9.9 0 1 0 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.5.04-1.12.06-1.8-.11a11.6 11.6 0 0 1-1.64-.6c-2.88-1.25-4.76-4.15-4.9-4.34-.15-.2-1.18-1.57-1.18-3s.75-2.13 1-2.42c.26-.3.57-.37.76-.37h.55c.18 0 .41-.06.64.5.24.57.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.14.31-.29.48-.14.17-.3.37-.44.5-.14.15-.3.3-.13.6.17.28.74 1.22 1.6 1.98 1.1.98 2.02 1.28 2.3 1.43.3.14.46.12.63-.07.17-.2.72-.84.92-1.13.2-.3.39-.24.65-.15.27.1 1.7.8 2 .95.28.14.48.22.55.34.07.12.07.68-.17 1.35z"/></svg>اطلب عبر واتساب</a></div>
           </article>
-          <article class="prod-card reveal" style="--accent:#F7941D; --d:.1s">
+          <article class="prod-card reveal tilt" style="--accent:#F7941D; --d:.1s">
             <span class="avail avail-ask">اسأل عن التوفر</span>
             <div class="prod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="3"/><path d="M7 2v1.2M7 10.8V12M2 7h1.2M10.8 7H12M3.8 3.8l.9.9M9.3 9.3l.9.9M9.3 4.7l.9-.9M3.8 10.2l.9-.9"/><path d="M11 17c0-2 2-3.5 4.5-3.5S20 15 20 17s-2 3.5-4.5 3.5S11 19 11 17z"/><path d="M13 17h5"/></svg></div>
             <h3>التين المجفف «القطين»</h3>
             <p>مُجفف بطرق طبيعية تحافظ على قيمته الغذائية ونكهته الأصيلة، دون أي إضافات.</p>
             <div class="prod-order"><a href="https://wa.me/966503184880?text=السلام%20عليكم،%20أبغى%20أطلب:%20القطين" target="_blank" rel="noopener" aria-label="اطلب القطين عبر واتساب"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.25-1.38A9.9 9.9 0 1 0 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.5.04-1.12.06-1.8-.11a11.6 11.6 0 0 1-1.64-.6c-2.88-1.25-4.76-4.15-4.9-4.34-.15-.2-1.18-1.57-1.18-3s.75-2.13 1-2.42c.26-.3.57-.37.76-.37h.55c.18 0 .41-.06.64.5.24.57.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.14.31-.29.48-.14.17-.3.37-.44.5-.14.15-.3.3-.13.6.17.28.74 1.22 1.6 1.98 1.1.98 2.02 1.28 2.3 1.43.3.14.46.12.63-.07.17-.2.72-.84.92-1.13.2-.3.39-.24.65-.15.27.1 1.7.8 2 .95.28.14.48.22.55.34.07.12.07.68-.17 1.35z"/></svg>اطلب عبر واتساب</a></div>
           </article>
-          <article class="prod-card reveal" style="--accent:#2BA8A0; --d:.2s">
+          <article class="prod-card reveal tilt" style="--accent:#2BA8A0; --d:.2s">
             <span class="avail avail-ask">اسأل عن التوفر</span>
             <div class="prod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5h6v3H9z"/><path d="M7.5 7.5c-.8 1-1.2 2.2-1.2 3.5v6.5a2.5 2.5 0 0 0 2.5 2.5h6.4a2.5 2.5 0 0 0 2.5-2.5V11c0-1.3-.4-2.5-1.2-3.5"/><path d="M9.5 13.5h5"/><path d="M9.5 16.5h3.5"/></svg></div>
             <h3>عجينة التين</h3>
@@ -262,14 +294,14 @@
       <div class="prod-group">
         <h3 class="prod-group-title">قطاع المشاتل والتوريد <em>للمزارعين</em></h3>
         <div class="prod-grid two">
-          <article class="prod-card reveal" style="--accent:#3BB54A">
+          <article class="prod-card reveal tilt" style="--accent:#3BB54A">
             <span class="avail avail-order">متاح للطلب والحجز</span>
             <div class="prod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 16h7l-.9 4.6a1 1 0 0 1-1 .4h-3.2a1 1 0 0 1-1-.4z"/><path d="M12 16V9"/><path d="M12 9c0-2.8 2-5 4.8-5C16.6 6.8 14.8 9 12 9z"/><path d="M12 11.5c0-2.2-1.7-4-4.2-4C8 9.7 9.6 11.5 12 11.5z"/></svg></div>
             <h3>شتلات التين</h3>
             <p>ننتج ونوفّر شتلات تين قوية وممتازة، مهيأة للنمو السريع والإنتاج الوفير.</p>
             <div class="prod-order"><a href="https://wa.me/966503184880?text=السلام%20عليكم،%20أبغى%20أطلب:%20شتلات%20تين" target="_blank" rel="noopener" aria-label="اطلب شتلات التين عبر واتساب"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.25-1.38A9.9 9.9 0 1 0 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.5.04-1.12.06-1.8-.11a11.6 11.6 0 0 1-1.64-.6c-2.88-1.25-4.76-4.15-4.9-4.34-.15-.2-1.18-1.57-1.18-3s.75-2.13 1-2.42c.26-.3.57-.37.76-.37h.55c.18 0 .41-.06.64.5.24.57.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.14.31-.29.48-.14.17-.3.37-.44.5-.14.15-.3.3-.13.6.17.28.74 1.22 1.6 1.98 1.1.98 2.02 1.28 2.3 1.43.3.14.46.12.63-.07.17-.2.72-.84.92-1.13.2-.3.39-.24.65-.15.27.1 1.7.8 2 .95.28.14.48.22.55.34.07.12.07.68-.17 1.35z"/></svg>اطلب عبر واتساب</a></div>
           </article>
-          <article class="prod-card reveal" style="--accent:#2B6CB8; --d:.1s">
+          <article class="prod-card reveal tilt" style="--accent:#2B6CB8; --d:.1s">
             <span class="avail avail-order">متاح للطلب والحجز</span>
             <div class="prod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20 18 5"/><path d="M10.5 14.5l3 2.2"/><path d="M13.2 11l3 2.2"/><path d="M9.7 12.3 7 11"/><circle cx="18.5" cy="4.5" r="1.6"/></svg></div>
             <h3>عُقل التين</h3>
@@ -284,7 +316,7 @@
   <!-- ===== Benefits ===== -->
   <section class="benefits section" id="benefits">
     <div class="container">
-      <div class="sec-head center">
+      <div class="sec-head center mask-up">
         <span class="kicker">فوائد التين</span>
         <h2 class="sec-title">كنوز في ثمرة واحدة</h2>
         <p class="sec-sub">بعض ما جعل التين سيّد فواكه الجنوب عبر العصور.</p>
@@ -318,7 +350,7 @@
   <!-- ===== Features ===== -->
   <section class="features section" id="features">
     <div class="container">
-      <div class="sec-head center">
+      <div class="sec-head center mask-up">
         <span class="kicker">لماذا النادرية؟</span>
         <h2 class="sec-title">تفاصيل تصنع الفرق</h2>
         <div class="orn"><i></i><i></i><i></i></div>
@@ -352,7 +384,7 @@
   <!-- ===== Gallery ===== -->
   <section class="gallery section" id="gallery" hidden>
     <div class="container">
-      <div class="sec-head center">
+      <div class="sec-head center mask-up">
         <span class="kicker">معرض الصور</span>
         <h2 class="sec-title">من قلب المزرعة</h2>
         <p class="sec-sub">لقطات حقيقية من أرض النادرية وثمارها.</p>
@@ -365,7 +397,7 @@
   <!-- ===== Values ===== -->
   <section class="section" id="values">
     <div class="container">
-      <div class="sec-head center">
+      <div class="sec-head center mask-up">
         <span class="kicker">قيمنا</span>
         <h2 class="sec-title">مبادئ لا نساوم عليها</h2>
         <div class="orn"><i></i><i></i><i></i></div>
@@ -393,7 +425,7 @@
   <!-- ===== FAQ ===== -->
   <section class="faq section" id="faq">
     <div class="container">
-      <div class="sec-head center">
+      <div class="sec-head center mask-up">
         <span class="kicker">الأسئلة الشائعة</span>
         <h2 class="sec-title">كل اللي تبغى تعرفه</h2>
         <div class="orn"><i></i><i></i><i></i></div>
@@ -430,7 +462,7 @@
   <!-- ===== Contact ===== -->
   <section class="contact section" id="contact">
     <div class="container">
-      <div class="sec-head center">
+      <div class="sec-head center mask-up">
         <span class="kicker">تواصل معنا</span>
         <h2 class="sec-title">حيّاكم الله.. البيت بيتكم</h2>
         <p class="sec-sub">للطلبات، التوريد، أو زيارة المزرعة — تواصلوا معنا مباشرة.</p>
@@ -510,7 +542,7 @@
         <div>
           <h4>روابط سريعة</h4>
           <ul>
-            <li><a href="#story">قصتنا</a></li>
+            <li><a href="#story">من نحن</a></li>
             <li><a href="#products">منتجاتنا</a></li>
             <li><a href="#faq">الأسئلة الشائعة</a></li>
             <li><a href="#contact">تواصل معنا</a></li>
@@ -540,7 +572,12 @@
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.25-1.38A9.9 9.9 0 1 0 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.5.04-1.12.06-1.8-.11a11.6 11.6 0 0 1-1.64-.6c-2.88-1.25-4.76-4.15-4.9-4.34-.15-.2-1.18-1.57-1.18-3s.75-2.13 1-2.42c.26-.3.57-.37.76-.37h.55c.18 0 .41-.06.64.5.24.57.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.14.31-.29.48-.14.17-.3.37-.44.5-.14.15-.3.3-.13.6.17.28.74 1.22 1.6 1.98 1.1.98 2.02 1.28 2.3 1.43.3.14.46.12.63-.07.17-.2.72-.84.92-1.13.2-.3.39-.24.65-.15.27.1 1.7.8 2 .95.28.14.48.22.55.34.07.12.07.68-.17 1.35z"/></svg>
   </a>
 
+  <button class="to-top" id="toTop" aria-label="العودة للأعلى">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+  </button>
+
   <script src="assets/script.js"></script>
+  <script src="assets/cinematic.js"></script>
   <script src="assets/analytics.js"></script>
 </body>
 </html>
