@@ -111,6 +111,20 @@
     document.body.classList.add('hero-ready');
     var rail = document.querySelector('.progress-rail');
     if (rail) setTimeout(function () { rail.classList.add('on'); }, 500);
+    honorDeepLink();
+  }
+
+  // A URL like /#products can't jump on load because the preloader locks
+  // scrolling while it is up — replay the jump once scrolling is restored.
+  function honorDeepLink() {
+    var hash = location.hash;
+    if (!hash || hash.length < 2) return;
+    var target;
+    try { target = document.getElementById(decodeURIComponent(hash.slice(1))); } catch (e) { return; }
+    if (!target) return;
+    setTimeout(function () {
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }, 90);
   }
 
   /* =========================================================
@@ -279,7 +293,31 @@
     btn.addEventListener('click', function () {
       document.body.classList.contains('menu-open') ? close() : open();
     });
-    ov.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+
+    ov.querySelectorAll('a').forEach(function (a) {
+      var href = a.getAttribute('href') || '';
+      var id = href.charAt(0) === '#' ? href.slice(1) : '';
+      var target = id ? document.getElementById(id) : null;
+
+      if (!target) {
+        // external / language / tel links: just close and let them navigate
+        a.addEventListener('click', close);
+        return;
+      }
+
+      // In-page links: the browser cancels the jump because closing the menu
+      // restores body scrolling in the same tick. Scroll manually instead.
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        close();
+        // small timeout (not rAF — that is frozen in background tabs) so the
+        // body regains its scrolling box before we move it
+        setTimeout(function () {
+          target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+          if (history.replaceState) history.replaceState(null, '', '#' + id);
+        }, 60);
+      });
+    });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && document.body.classList.contains('menu-open')) close();
     });

@@ -165,11 +165,19 @@ body.menu-open .mb-ico i:nth-child(2) { width: 18px; transform: translateY(-3px)
     radial-gradient(700px 600px at 10% 90%, rgba(30, 107, 62, .35), transparent 60%),
     linear-gradient(160deg, #071d12, var(--green-950) 60%, var(--green-900));
   clip-path: circle(0% at var(--ox, 90%) var(--oy, 6%));
-  transition: clip-path .85s cubic-bezier(.76, 0, .24, 1);
+  /* delay visibility so the CLOSING animation is actually seen */
+  transition: clip-path .85s cubic-bezier(.76, 0, .24, 1), visibility 0s linear .85s;
   visibility: hidden;
+  pointer-events: none;
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
-body.menu-open .nav-overlay { clip-path: circle(150% at var(--ox, 90%) var(--oy, 6%)); visibility: visible; }
+body.menu-open .nav-overlay {
+  clip-path: circle(150% at var(--ox, 90%) var(--oy, 6%));
+  visibility: visible;
+  pointer-events: auto;
+  transition: clip-path .85s cubic-bezier(.76, 0, .24, 1), visibility 0s linear 0s;
+}
 body.menu-open { overflow: hidden; }
 
 .nav-inner {
@@ -374,6 +382,19 @@ body.menu-open .progress-rail { opacity: 0; pointer-events: none; }
 /* ---------- Mobile / touch refinements ---------- */
 @media (max-width: 900px) {
   .cursor { display: none !important; }
+}
+/* comfortable touch targets (WCAG 2.5.8) */
+@media (hover: none) and (pointer: coarse) {
+  .footer li { margin-bottom: .2rem; }
+  .footer li a,
+  .map-foot a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: .25rem;
+  }
+  .nav-foot .nf-col a { display: inline-flex; align-items: center; min-height: 44px; }
+  .faq-item summary { min-height: 52px; }
 }
 @media (max-width: 640px) {
   .nav-inner {
