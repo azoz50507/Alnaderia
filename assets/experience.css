@@ -1,0 +1,172 @@
+/* Progressive enhancement: dialogs, inquiry selection and gentle feedback. */
+[data-product-category][hidden], #mobileNav[hidden] { display: none !important; }
+.exp-modal-open { overflow: hidden; }
+.exp-dialog {
+  --exp-forest: #203b31;
+  --exp-cream: #faf7ef;
+  --exp-muted: #687268;
+  --exp-line: #dddccf;
+  --exp-gold: #92753e;
+  position: fixed;
+  inset: 0;
+  width: min(680px, calc(100vw - 32px));
+  max-width: none;
+  max-height: min(90dvh, 960px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgb(255 255 255 / .3);
+  border-radius: 22px;
+  background: var(--exp-cream);
+  color: var(--exp-forest);
+  box-shadow: 0 28px 100px rgb(11 27 20 / .3);
+  font: inherit;
+  text-align: start;
+  scrollbar-width: thin;
+  scrollbar-color: #b7bdac var(--exp-cream);
+}
+.exp-dialog::backdrop { background: rgb(10 29 21 / .65); backdrop-filter: blur(7px); }
+.exp-dialog-shell { position: relative; padding: 42px 38px 25px; }
+.exp-dialog button, .exp-dialog input, .exp-dialog select, .exp-dialog textarea { font: inherit; }
+.exp-dialog button, .exp-dialog a, .exp-dialog summary, .exp-dialog select { -webkit-tap-highlight-color: transparent; }
+.exp-dialog button { cursor: pointer; }
+.exp-dialog button:disabled { cursor: default; }
+.exp-dialog :focus-visible { outline: 2px solid var(--exp-gold); outline-offset: 4px; }
+.exp-dialog h2:focus { outline: none; }
+.exp-close {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 18px;
+  inset-inline-end: 18px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--exp-line);
+  border-radius: 50%;
+  background: var(--exp-cream);
+  color: var(--exp-forest);
+  font-family: Arial, sans-serif !important;
+  font-size: 27px !important;
+  line-height: 1;
+  transition: background .2s, transform .2s;
+}
+.exp-close:hover { background: #e9eddf; transform: rotate(8deg); }
+.exp-dialog-header { padding-inline-end: 22px; }
+.exp-eyebrow { display: block; margin-bottom: 10px; color: var(--exp-gold); font-size: 12px; font-weight: 650; letter-spacing: .04em; }
+html[lang="en"] .exp-eyebrow { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+.exp-dialog h2 { margin: 0 0 14px; font-size: clamp(25px, 4vw, 36px); font-weight: 650; line-height: 1.45; letter-spacing: -.035em; }
+.exp-dialog p { margin: 0; }
+.exp-intro { max-width: 490px; color: var(--exp-muted); font-size: 13px; line-height: 1.95; }
+.exp-selection-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-block: 28px 12px; }
+.exp-selection-count { color: var(--exp-gold); font-size: 11px; font-weight: 650; }
+.exp-clear { min-height: 30px; padding: 0 3px; border: 0; background: transparent; color: var(--exp-muted); font-size: 10px !important; text-decoration: underline; text-underline-offset: 3px; }
+.exp-clear[hidden] { display: none; }
+.exp-basket { border-block: 1px solid var(--exp-line); }
+.exp-item { display: grid; grid-template-columns: 50px 1fr auto; align-items: center; gap: 15px; padding: 19px 0; }
+.exp-item + .exp-item { border-top: 1px solid var(--exp-line); }
+.exp-item-mark { display: grid; place-items: center; width: 50px; height: 60px; border-radius: 25px 25px 5px 5px; background: #e6eadc; font-family: Georgia, serif; font-size: 22px; color: #59704f; }
+.exp-mark-fresh { background: #ebe0e3; color: #764d64; }
+.exp-mark-dried { background: #ecdfc7; color: #8b6836; }
+.exp-mark-paste { background: #e7ded0; color: #886444; }
+.exp-mark-seedling { background: #dde7d6; color: #4c6943; }
+.exp-mark-cuttings { background: #e2e5da; color: #667051; }
+.exp-mark-gift { background: #ece4ca; color: #8d7943; }
+.exp-item h3 { margin: 0 0 4px; font-size: 14px; font-weight: 650; line-height: 1.6; }
+.exp-item-description p { color: var(--exp-muted); font-size: 10px; line-height: 1.8; }
+.exp-item-controls { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.exp-quantity { display: flex; align-items: center; direction: ltr; height: 36px; border: 1px solid #cad0bf; border-radius: 8px; overflow: hidden; }
+.exp-quantity button { width: 33px; height: 34px; padding: 0; border: 0; background: transparent; color: var(--exp-forest); font-family: Arial, sans-serif; font-size: 18px; }
+.exp-quantity button:hover:not(:disabled) { background: #e6eadc; }
+.exp-quantity button:disabled { opacity: .3; }
+.exp-quantity input { width: 32px; min-width: 0; height: 28px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--exp-forest); text-align: center; font-size: 12px; appearance: textfield; -moz-appearance: textfield; }
+.exp-quantity input::-webkit-inner-spin-button, .exp-quantity input::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
+.exp-remove { min-height: 26px; padding: 0 7px; border: 0; background: transparent; color: var(--exp-muted); font-size: 10px !important; text-decoration: underline; text-underline-offset: 3px; }
+.exp-remove:hover { color: #893f3b; }
+.exp-add-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-block: 18px 24px; }
+.exp-select, .exp-input { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid #d2d7c8; border-radius: 8px; background: #fffef8; color: var(--exp-forest); font-size: 12px !important; }
+.exp-select { min-height: 46px; padding: 9px 12px; }
+.exp-secondary { padding: 10px 15px; border: 1px solid #9da88e; border-radius: 8px; background: transparent; color: var(--exp-forest); font-size: 11px !important; font-weight: 650 !important; transition: background .2s; }
+.exp-secondary:hover { background: #e8eddf; }
+.exp-optional { padding-block: 18px; border-block: 1px solid var(--exp-line); }
+.exp-optional summary { cursor: pointer; font-size: 14px; font-weight: 650; }
+.exp-optional summary span { margin-inline-start: 10px; color: var(--exp-muted); font-size: 11px; font-weight: 400; }
+.exp-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-top: 20px; }
+.exp-field-wide { grid-column: 1 / -1; }
+.exp-field label { display: block; margin-bottom: 7px; font-size: 11px; font-weight: 650; }
+.exp-input { padding: 11px 12px; line-height: 1.8; }
+.exp-input::placeholder { color: #828777; opacity: 1; }
+textarea.exp-input { display: block; min-height: 94px; resize: vertical; }
+.exp-dialog-status { min-height: 22px; padding-top: 10px; color: #496648; font-size: 11px; line-height: 1.8; }
+.exp-primary { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 53px; padding: 12px 22px; border: 1px solid var(--exp-forest); border-radius: 9px; background: var(--exp-forest); color: #fffdf4; font-size: 13px !important; font-weight: 650 !important; line-height: 1.8; text-decoration: none; transition: background .2s, transform .2s; }
+.exp-primary:hover { transform: translateY(-1px); background: #314f3f; color: #fffdf4; }
+.exp-primary[aria-disabled="true"] { opacity: .45; cursor: default; transform: none; }
+.exp-checkout-area { margin-top: 8px; }
+.exp-checkout-hint { max-width: 470px; margin: 11px auto 0 !important; color: var(--exp-muted); font-size: 10px; line-height: 1.9; text-align: center; }
+.exp-privacy { margin-top: 18px !important; padding-top: 16px; border-top: 1px solid var(--exp-line); color: #7a8174; font-size: 9px; line-height: 1.9; text-align: center; }
+.exp-empty { padding: 30px 15px; text-align: center; }
+.exp-empty-mark { display: block; margin-bottom: 10px; color: #a89864; font-size: 38px; line-height: 1; }
+.exp-empty h3 { margin: 0 0 8px; font-size: 19px; font-weight: 550; }
+.exp-empty p { max-width: 350px; margin-inline: auto; color: var(--exp-muted); font-size: 12px; line-height: 1.9; }
+.exp-text-button { margin-top: 15px; padding: 5px 0; border: 0; border-bottom: 1px solid #aab69c; background: transparent; color: var(--exp-forest); font-size: 12px !important; }
+.exp-product-dialog { width: min(760px, calc(100vw - 32px)); }
+.exp-product-dialog .exp-dialog-shell { padding: 0; }
+.exp-product-content { display: grid; grid-template-columns: 200px 1fr; min-height: 480px; }
+.exp-detail-art { position: relative; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 35px 25px; }
+.exp-detail-art::after { position: absolute; inset: 20px; border: 1px solid currentColor; border-radius: 100px 100px 0 0; content: ''; opacity: .18; }
+.exp-detail-number { position: relative; z-index: 1; font-family: Georgia, serif; font-size: 60px; font-style: italic; line-height: 1.4; opacity: .7; }
+.exp-detail-star { position: relative; z-index: 1; align-self: center; margin-block: 50px; font-size: 150px; line-height: 1; opacity: .65; }
+.exp-detail-copy { padding: 56px 32px 30px; }
+.exp-detail-description { color: var(--exp-muted); font-size: 13px; line-height: 1.95; }
+.exp-care { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--exp-line); }
+.exp-care h3 { margin: 0 0 8px; font-size: 13px; font-weight: 650; }
+.exp-care p { color: var(--exp-muted); font-size: 11px; line-height: 1.95; }
+.exp-availability { margin-block: 22px 14px !important; color: var(--exp-gold); font-size: 10px; line-height: 1.8; }
+.exp-detail-copy .exp-primary { width: 100%; }
+.exp-toast { position: fixed; z-index: 999; inset-inline-start: 50%; bottom: 28px; width: max-content; max-width: calc(100vw - 36px); padding: 13px 22px; border: 1px solid #687957; border-radius: 10px; background: #223d30; color: #fffaf0; box-shadow: 0 10px 30px #16271b26; font-size: 12px; line-height: 1.8; text-align: center; opacity: 0; pointer-events: none; translate: -50% 10px; transition: opacity .2s, translate .2s; }
+html[dir="rtl"] .exp-toast { translate: 50% 10px; }
+.exp-toast.is-visible { opacity: 1; translate: -50% 0; }
+html[dir="rtl"] .exp-toast.is-visible { translate: 50% 0; }
+.exp-sr { position: absolute !important; width: 1px !important; height: 1px !important; margin: -1px !important; padding: 0 !important; overflow: hidden !important; clip-path: inset(50%) !important; white-space: nowrap !important; border: 0 !important; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .exp-dialog[open] { animation: exp-dialog-enter .24s ease-out; }
+  .reveal.exp-revealed { animation: exp-content-enter .65s cubic-bezier(.2,.7,.3,1) both; }
+  @keyframes exp-dialog-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes exp-content-enter { from { transform: translateY(13px); } to { transform: translateY(0); } }
+}
+@media (max-width: 560px) {
+  /* Avoid automatic viewport zoom when an iPhone user edits a field. */
+  .exp-dialog .exp-input, .exp-dialog .exp-select, .exp-dialog .exp-quantity input { font-size: 16px !important; }
+  .exp-dialog { width: calc(100vw - 20px); max-height: 92dvh; border-radius: 16px; }
+  .exp-dialog-shell { padding: 45px 20px 20px; }
+  .exp-dialog-header { padding-inline-end: 4px; }
+  .exp-close { inset-block-start: 12px; inset-inline-end: 12px; width: 36px; height: 36px; }
+  .exp-dialog h2 { margin-bottom: 9px; font-size: 25px; }
+  .exp-intro { font-size: 12px; }
+  .exp-selection-heading { margin-block-start: 22px; }
+  .exp-item { grid-template-columns: 36px 1fr auto; gap: 10px; padding-block: 16px; }
+  .exp-item-mark { width: 36px; height: 48px; font-size: 17px; }
+  .exp-item h3 { font-size: 12px; }
+  .exp-item-description p { font-size: 9px; }
+  .exp-quantity { height: 36px; }
+  .exp-quantity button { width: 29px; }
+  .exp-quantity input { width: 26px; }
+  .exp-add-row { gap: 8px; }
+  .exp-secondary { padding-inline: 10px; font-size: 10px !important; }
+  .exp-fields { grid-template-columns: 1fr; gap: 13px; }
+  .exp-optional summary span { display: block; margin-inline-start: 18px; margin-top: 4px; }
+  .exp-product-content { grid-template-columns: 1fr; }
+  .exp-detail-art { height: 112px; flex-direction: row; align-items: center; padding: 20px 30px; }
+  .exp-detail-art::after { inset: 12px; border-radius: 80px 80px 0 0; }
+  .exp-detail-number { font-size: 46px; }
+  .exp-detail-star { margin: 0 25px 0 0; font-size: 84px; }
+  .exp-detail-copy { padding: 26px 24px; }
+  .exp-care { margin-top: 18px; padding-top: 16px; }
+  .exp-toast { bottom: 90px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .exp-dialog *, .exp-toast { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
