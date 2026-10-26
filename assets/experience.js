@@ -30,7 +30,8 @@
       updated: 'Your selection has been updated.', max: 'You can request up to 99 units here. For larger quantities, add a note.',
       messageIntro: 'Hello Naderia Farm, I would like to inquire about the following:',
       messageEnd: 'Please confirm availability, pack sizes, prices and delivery or collection options. Thank you.',
-      contactName: 'Name', contactCity: 'City', contactNote: 'Note', messageQuantity: 'requested quantity'
+      contactName: 'Name', contactCity: 'City', contactNote: 'Note', messageQuantity: 'requested quantity',
+      openMenu: 'Open menu', closeMenu: 'Close menu'
     } : {
       close: 'إغلاق', eyebrow: 'شيء من النادرية', title: 'اختياراتك من المزرعة',
       intro: 'اجمع ما تحب، ونتواصل معك عبر واتساب لتأكيد التوفر وأحجام العبوات والأسعار.',
@@ -51,10 +52,11 @@
       updated: 'تم تحديث اختياراتك.', max: 'يمكن طلب حتى ٩٩ وحدة هنا. للكميات الأكبر، اكتب لنا في الملاحظات.',
       messageIntro: 'السلام عليكم مزرعة النادرية، أرغب بالاستفسار عن المنتجات التالية:',
       messageEnd: 'أرجو تأكيد التوفر وأحجام العبوات والأسعار وخيارات التوصيل أو الاستلام. شكرًا لكم.',
-      contactName: 'الاسم', contactCity: 'المدينة', contactNote: 'ملاحظات', messageQuantity: 'الكمية المطلوبة'
+      contactName: 'الاسم', contactCity: 'المدينة', contactNote: 'ملاحظات', messageQuantity: 'الكمية المطلوبة',
+      openMenu: 'فتح القائمة', closeMenu: 'إغلاق القائمة'
     };
     var products = english ? {
-      fresh: { name: 'Fresh figs', tag: 'The season’s fruit', mark: '01', description: 'Figs from Naderia, hand-picked in Ahad Rafidah. A simple pleasure for the table, or something thoughtful to share.', care: 'Fresh fruit follows the harvest. Ask about the available varieties, ripeness and collection timing. Confirm storage advice with the farm when ordering.' },
+      fresh: { name: 'Fresh figs', tag: 'The season’s fruit', mark: '01', description: 'Figs from Naderia, picked by hand in Ahad Rafidah. A simple pleasure for the table, or something thoughtful to share.', care: 'Fresh fruit follows the harvest. Ask about the available varieties, ripeness and collection timing. Confirm storage advice with the farm when ordering.' },
       dried: { name: 'Dried figs · Qateen', tag: 'A taste of the pantry', mark: '02', description: 'The familiar character of figs in their dried form. An Asiri pantry favourite to enjoy on its own or alongside coffee.', care: 'Ask about available pack sizes, ingredients and the storage instructions for your chosen pack.' },
       paste: { name: 'Fig paste', tag: 'Made for your table', mark: '03', description: 'A different way to enjoy the flavour of figs, for your own recipes, baking and favourite pairings.', care: 'Tell us how you plan to use it. The farm can confirm the ingredients, pack sizes and storage details before you order.' },
       seedling: { name: 'Fig saplings', tag: 'Let your story grow', mark: '04', description: 'Start your own connection with the fig tree. Explore the saplings available from Naderia’s nursery.', care: 'Share your city and planting space. Ask the nursery about the available variety, plant size and suitable planting and care instructions for your location.' },
@@ -421,8 +423,15 @@
       var product = products[id];
       detailContent.replaceChildren();
       var art = element('div', 'exp-detail-art exp-mark-' + id);
+      var source = document.querySelector('.product-' + id + ' img');
+      if (source) {
+        var picture = element('img');
+        picture.src = source.currentSrc || source.src;
+        picture.alt = '';
+        picture.style.cssText = source.style.cssText;
+        art.appendChild(picture);
+      }
       art.appendChild(element('span', 'exp-detail-number', product.mark));
-      art.appendChild(element('span', 'exp-detail-star', '✳'));
       art.setAttribute('aria-hidden', 'true');
       var content = element('div', 'exp-detail-copy');
       content.appendChild(element('span', 'exp-eyebrow', product.tag));
@@ -483,55 +492,31 @@
     filters.forEach(function (node) { node.addEventListener('click', function () { filterProducts(node.dataset.filter); }); });
     if (cards.length) filterProducts('all');
 
+    // The full height menu panel fades in while its links arrive in reading order (style.css).
     var menuButton = document.getElementById('menuBtn');
     var mobileNav = document.getElementById('mobileNav');
-    function closeMenu(returnFocus) {
+    function menuOpen() { return document.body.classList.contains('nav-open'); }
+    function setMenu(open, returnFocus) {
       if (!menuButton || !mobileNav) return;
-      mobileNav.hidden = true;
-      menuButton.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('nav-open');
-      if (returnFocus) menuButton.focus();
+      document.body.classList.toggle('nav-open', open);
+      menuButton.setAttribute('aria-expanded', String(open));
+      menuButton.setAttribute('aria-label', open ? labels.closeMenu : labels.openMenu);
+      mobileNav.inert = !open;
+      mobileNav.setAttribute('aria-hidden', String(!open));
+      if (!open && returnFocus) menuButton.focus();
     }
     if (menuButton && mobileNav) {
-      menuButton.setAttribute('aria-controls', 'mobileNav');
-      menuButton.setAttribute('aria-expanded', 'false');
-      mobileNav.hidden = true;
-      menuButton.addEventListener('click', function () {
-        var opening = mobileNav.hidden;
-        mobileNav.hidden = !opening;
-        menuButton.setAttribute('aria-expanded', String(opening));
-        document.body.classList.toggle('nav-open', opening);
-      });
+      setMenu(false);
+      menuButton.addEventListener('click', function () { setMenu(!menuOpen()); });
       mobileNav.addEventListener('click', function (event) {
-        if (event.target.closest('a, [data-order]')) closeMenu(false);
+        if (event.target.closest('a, [data-order]')) setMenu(false);
       });
       document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && !mobileNav.hidden && !document.querySelector('.exp-dialog[open]')) closeMenu(true);
+        if (event.key === 'Escape' && menuOpen() && !document.querySelector('.exp-dialog[open]')) setMenu(false, true);
       });
-      document.addEventListener('click', function (event) {
-        if (!mobileNav.hidden && !mobileNav.contains(event.target) && !menuButton.contains(event.target)) closeMenu(false);
-      });
-      window.addEventListener('resize', function () { if (menuButton.getClientRects().length === 0) closeMenu(false); }, { passive: true });
+      window.addEventListener('resize', function () { if (menuOpen() && menuButton.getClientRects().length === 0) setMenu(false); }, { passive: true });
     }
 
-    var header = document.getElementById('siteHeader');
-    if (header) {
-      function updateHeader() { header.classList.toggle('scrolled', window.scrollY > 20); }
-      window.addEventListener('scroll', updateHeader, { passive: true });
-      updateHeader();
-    }
-    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if ('IntersectionObserver' in window && !reducedMotion.matches) {
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('exp-revealed');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.08 });
-      document.querySelectorAll('.reveal').forEach(function (node) { observer.observe(node); });
-    }
     window.addEventListener('storage', function (event) {
       if (event.key !== storageKey && event.key !== null) return;
       try { basket = validBasket(JSON.parse(event.newValue)); }

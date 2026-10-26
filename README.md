@@ -25,7 +25,8 @@ python scripts/serve.py
 ## التعديل والتحقق
 
 - محتوى الصفحتين الرئيسيتين مصدره `scripts/build_site.py`. بعد تعديله، شغّل `python scripts/build_site.py` لإعادة توليد `index.html` و`en/index.html` معًا.
-- التصميم العام في `assets/style.css`، والتفاعلات في `assets/experience.js` وتنسيقها في `assets/experience.css`.
+- التصميم العام في `assets/style.css`، والحركة (ظهور الواجهة، كشف الأقسام، تحميل الصور، حكايات بطاقات «لماذا النادرية»، وإضاءة الشعار كلمة بكلمة) في `assets/motion.js`، والطلبات والنوافذ في `assets/experience.js` وتنسيقها في `assets/experience.css`.
+- نظام التصميم مبني على مهارتي [ai-design-skills](https://github.com/elayadesign/ai-design-skills): `landing-page-design` (مقاسات Tailwind للخط، جدول المسافات 2 إلى 96، زوايا Tailwind، خلفيات مسطحة، خط واحد هو IBM Plex Sans Arabic، أيقونات Phosphor) و`design-to-motion` (سياق موقع: الحركة تبدأ عند ظهور القسم، وتتوقف خارج الشاشة، وتحترم «تقليل الحركة»). الاستثناء الوحيد المقصود: ارتفاع السطر للعناوين العربية أكبر من قيمة المقياس حتى لا تتلاصق الحروف.
 - شغّل `python scripts/build_site.py` أيضًا بعد تعديل CSS أو JavaScript؛ يضيف المولّد بصمة تلقائية إلى روابط الملفات حتى يحصل الزوار على الإصدار المحدّث.
 - صفحات الخصوصية في `privacy.html` و`en/privacy.html`، وصفحة الخطأ في `404.html`. تصميمها المشترك في `assets/pages.css`.
 - الخطوط والصور محلية داخل `assets/`. حافظ على نص بديل مناسب للصور، وحجم مضغوط يناسب الجوال.
