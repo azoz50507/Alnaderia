@@ -12,63 +12,63 @@
     var toastTimer;
     var labels = english ? {
       close: 'Close', eyebrow: 'A little piece of Naderia', title: 'Your farm selection',
-      intro: 'Bring your favourites together. We’ll confirm availability, pack sizes and prices with you on WhatsApp.',
-      emptyTitle: 'Good things begin with a choice.', emptyText: 'Add fruit, a pantry favourite or the beginning of your own fig tree.',
-      choose: 'Choose a product', add: 'Add to selection', remove: 'Remove', clear: 'Clear selection', cleared: 'Your selection has been cleared.', decrease: 'Decrease quantity of', increase: 'Increase quantity of',
-      quantity: 'Requested quantity', packNote: 'Pack size and price confirmed with the farm',
-      optional: 'Make it yours', optionalHint: 'These details are optional.', name: 'Your name', namePlaceholder: 'How should we address you?',
+      intro: 'Bring your favourites together, then send your selection on WhatsApp and we will confirm availability, sizes and prices with you.',
+      emptyTitle: 'Nothing added yet.', emptyText: 'Add fruit, a pantry favourite or the beginning of your own fig tree.',
+      choose: 'Choose a product', add: 'Add to my selection', remove: 'Remove', clear: 'Clear selection', cleared: 'Your selection has been cleared.', decrease: 'Decrease quantity of', increase: 'Increase quantity of',
+      quantity: 'Requested quantity', packNote: 'Size and price to be confirmed with you on WhatsApp',
+      optional: 'Add your name, city or a note', optionalHint: 'These details are optional.', name: 'Your name', namePlaceholder: 'How should we address you?',
       city: 'City', cityPlaceholder: 'Your delivery or collection city', note: 'A note for the farm',
       notePlaceholder: 'Preferred weight, gift packaging, occasion or a question…',
-      checkout: 'Continue on WhatsApp', checkoutHint: 'Review your message in WhatsApp and send it when you’re ready. This is an inquiry, not a confirmed order.',
+      checkout: 'Continue on WhatsApp', checkoutHint: 'Review your message in WhatsApp and send it when you’re ready. This is an enquiry, not a confirmed order.',
       privacy: 'Only your product selection is saved on this device when storage is available. Your contact details are not saved.',
-      sessionOnly: 'Your selection is available for this visit. Browser storage is unavailable.',
-      browse: 'Explore the collection', added: 'Added to your selection', removed: 'Removed from your selection',
+      sessionOnly: 'Your browser is not saving data, so your selection will last for this visit only.',
+      browse: 'Explore products', added: function (name) { return name + ' added to your selection'; }, removed: function (name) { return name + ' removed from your selection'; },
       details: 'A closer look', careTitle: 'Good to know', inquire: 'Add to my selection',
-      availability: 'Ask us about today’s availability and pack options.',
+      availability: 'Ask us what is available today and in which sizes.',
       count: function (count) { return number.format(count) + (count === 1 ? ' product' : ' products'); },
       selectionCount: function (count) { return number.format(count) + (count === 1 ? ' requested item' : ' requested items'); },
-      updated: 'Your selection has been updated.', max: 'You can request up to 99 units here. For larger quantities, add a note.',
-      messageIntro: 'Hello Naderia Farm, I would like to inquire about the following:',
+      updated: 'Your selection was updated in another tab.', max: 'You can request up to 99 units here. For larger quantities, add a note.',
+      messageIntro: 'Hello Naderia Farm, I would like to ask about the following products:',
       messageEnd: 'Please confirm availability, pack sizes, prices and delivery or collection options. Thank you.',
       contactName: 'Name', contactCity: 'City', contactNote: 'Note', messageQuantity: 'requested quantity',
-      openMenu: 'Open menu', closeMenu: 'Close menu'
+      openMenu: 'Open menu', closeMenu: 'Close menu', open: 'Open your selection', separator: ', '
     } : {
-      close: 'إغلاق', eyebrow: 'شيء من النادرية', title: 'اختياراتك من المزرعة',
-      intro: 'اجمع ما تحب، ونتواصل معك عبر واتساب لتأكيد التوفر وأحجام العبوات والأسعار.',
-      emptyTitle: 'الحكاية تبدأ باختيارك.', emptyText: 'أضف ثمرة تحبها، أو مذاقًا لمائدتك، أو البداية لشجرة تين في بيتك.',
-      choose: 'اختر منتجًا', add: 'أضف لاختياراتي', remove: 'إزالة', clear: 'مسح الاختيارات', cleared: 'تم مسح اختياراتك.', decrease: 'تقليل كمية', increase: 'زيادة كمية',
-      quantity: 'الكمية المطلوبة', packNote: 'حجم العبوة والسعر يُؤكدان مع المزرعة',
-      optional: 'على ذوقك', optionalHint: 'هذه التفاصيل اختيارية.', name: 'اسمك', namePlaceholder: 'بأي اسم نناديك؟',
-      city: 'المدينة', cityPlaceholder: 'مدينة التوصيل أو الاستلام', note: 'رسالة للمزرعة',
+      close: 'إغلاق', eyebrow: 'شيء من النادرية', title: 'قائمة طلبك',
+      intro: 'اجمع ما تحب، ثم أرسل قائمتك عبر واتساب لنؤكد معك التوفر والأحجام والأسعار.',
+      emptyTitle: 'لم تُضف شيئًا بعد.', emptyText: 'أضف ثمرة تحبها، أو مذاقًا لمائدتك، أو بداية شجرة تين في بيتك.',
+      choose: 'اختر منتجًا', add: 'أضف إلى قائمة طلبك', remove: 'إزالة', clear: 'إفراغ القائمة', cleared: 'أُفرغت قائمة طلبك.', decrease: 'تقليل كمية', increase: 'زيادة كمية',
+      quantity: 'الكمية المطلوبة', packNote: 'نؤكد معك الحجم والسعر عبر واتساب',
+      optional: 'أضف اسمك ومدينتك وملاحظاتك', optionalHint: 'هذه التفاصيل اختيارية.', name: 'اسمك', namePlaceholder: 'بأي اسم نناديك؟',
+      city: 'المدينة', cityPlaceholder: 'مدينة التوصيل أو الاستلام', note: 'ملاحظات للمزرعة',
       notePlaceholder: 'الوزن الذي تفضله، تغليف هدية، مناسبة أو أي استفسار…',
-      checkout: 'أكمل عبر واتساب', checkoutHint: 'راجع رسالتك في واتساب وأرسلها عندما تكون جاهزًا. هذه قائمة استفسار وليست طلبًا مؤكدًا.',
-      privacy: 'تُحفظ اختيارات المنتجات على هذا الجهاز إذا أتاح المتصفح ذلك. لا نحفظ بيانات التواصل التي تكتبها.',
-      sessionOnly: 'اختياراتك متاحة خلال هذه الزيارة. التخزين في المتصفح غير متاح.',
-      browse: 'اكتشف المنتجات', added: 'أُضيف إلى اختياراتك', removed: 'أُزيل من اختياراتك',
-      details: 'تعرّف عليه أكثر', careTitle: 'تفاصيل تهمك', inquire: 'أضف لاختياراتي',
-      availability: 'اسألنا عن توفر اليوم وخيارات العبوات.',
+      checkout: 'أكمل عبر واتساب', checkoutHint: 'راجع رسالتك في واتساب وأرسلها عندما تكون جاهزًا. هذا استفسار، وليس طلبًا مؤكدًا.',
+      privacy: 'نحفظ قائمة طلبك فقط على هذا الجهاز إذا سمح المتصفح بذلك، ولا نحفظ بيانات التواصل التي تكتبها.',
+      sessionOnly: 'ستبقى قائمة طلبك خلال هذه الزيارة فقط، لأن المتصفح لا يسمح بحفظها.',
+      browse: 'اكتشف المنتجات', added: function (name) { return 'أُضيف إلى قائمة طلبك: ' + name; }, removed: function (name) { return 'أُزيل من قائمة طلبك: ' + name; },
+      details: 'تعرّف عليه أكثر', careTitle: 'تفاصيل تهمك', inquire: 'أضف إلى قائمة طلبك',
+      availability: 'اسألنا عن المتوفر اليوم والأحجام المتاحة.',
       count: function (count) { return count === 1 ? 'منتج واحد' : count === 2 ? 'منتجان' : number.format(count) + ' منتجات'; },
       selectionCount: function (count) { return 'الكمية الإجمالية: ' + number.format(count); },
-      updated: 'تم تحديث اختياراتك.', max: 'يمكن طلب حتى ٩٩ وحدة هنا. للكميات الأكبر، اكتب لنا في الملاحظات.',
-      messageIntro: 'السلام عليكم مزرعة النادرية، أرغب بالاستفسار عن المنتجات التالية:',
+      updated: 'حُدِّثت قائمة طلبك من نافذة أخرى.', max: 'الحد الأعلى هنا ٩٩ وحدة. للكميات الأكبر، اكتبها في خانة الملاحظات.',
+      messageIntro: 'السلام عليكم مزرعة النادرية، أرغب في الاستفسار عن المنتجات التالية:',
       messageEnd: 'أرجو تأكيد التوفر وأحجام العبوات والأسعار وخيارات التوصيل أو الاستلام. شكرًا لكم.',
       contactName: 'الاسم', contactCity: 'المدينة', contactNote: 'ملاحظات', messageQuantity: 'الكمية المطلوبة',
-      openMenu: 'فتح القائمة', closeMenu: 'إغلاق القائمة'
+      openMenu: 'فتح القائمة', closeMenu: 'إغلاق القائمة', open: 'فتح قائمة طلبك', separator: '، '
     };
     var products = english ? {
-      fresh: { name: 'Fresh figs', tag: 'The season’s fruit', mark: '01', description: 'Figs from Naderia, picked by hand in Ahad Rafidah. A simple pleasure for the table, or something thoughtful to share.', care: 'Fresh fruit follows the harvest. Ask about the available varieties, ripeness and collection timing. Confirm storage advice with the farm when ordering.' },
-      dried: { name: 'Dried figs · Qateen', tag: 'A taste of the pantry', mark: '02', description: 'The familiar character of figs in their dried form. An Asiri pantry favourite to enjoy on its own or alongside coffee.', care: 'Ask about available pack sizes, ingredients and the storage instructions for your chosen pack.' },
+      fresh: { name: 'Fresh figs', tag: 'The season’s fruit', mark: '01', description: 'Figs from Naderia, picked by hand in Ahad Rafidah. A simple pleasure for the table, or something thoughtful to share.', care: 'Fresh fruit follows the harvest. Ask us about available varieties, ripeness, collection timing and storage advice when you confirm your order.' },
+      dried: { name: 'Dried figs · Qateen', tag: 'A taste of the pantry', mark: '02', description: 'The familiar character of figs in their dried form. An Asir pantry favourite to enjoy on its own or alongside coffee.', care: 'Ask about available pack sizes, ingredients and the storage instructions for your chosen pack.' },
       paste: { name: 'Fig paste', tag: 'Made for your table', mark: '03', description: 'A different way to enjoy the flavour of figs, for your own recipes, baking and favourite pairings.', care: 'Tell us how you plan to use it. The farm can confirm the ingredients, pack sizes and storage details before you order.' },
-      seedling: { name: 'Fig saplings', tag: 'Let your story grow', mark: '04', description: 'Start your own connection with the fig tree. Explore the saplings available from Naderia’s nursery.', care: 'Share your city and planting space. Ask the nursery about the available variety, plant size and suitable planting and care instructions for your location.' },
-      cuttings: { name: 'Fig cuttings', tag: 'For growers', mark: '05', description: 'Fig cuttings for those who enjoy the process of growing and propagation. Availability depends on the pruning season.', care: 'Confirm variety, preparation and timing with the nursery. Rooting and growth depend on conditions and care; ask for advice suited to your planting setup.' },
-      gift: { name: 'A gift from Naderia', tag: 'Thoughtfully chosen', mark: '06', description: 'Turn your choice from the farm into a thoughtful gift. Tell us the occasion and the products you have in mind.', care: 'Gift contents, packaging, quantities and timing are arranged with the farm according to availability. Add your preferences to your inquiry.' }
+      seedling: { name: 'Fig saplings', tag: 'Let your story grow', mark: '04', description: 'Plant a fig tree of your own, starting with a sapling from Naderia’s nursery.', care: 'Share your city and planting space. Ask us about available varieties, sapling size, and planting and care advice for your area.' },
+      cuttings: { name: 'Fig cuttings', tag: 'For growers', mark: '05', description: 'Fig cuttings for those who enjoy the process of growing and propagation. Availability depends on the pruning season.', care: 'We confirm the variety, preparation and timing with you. Rooting and growth depend on conditions and care; ask for advice suited to your planting setup.' },
+      gift: { name: 'A gift from Naderia', tag: 'Thoughtfully chosen', mark: '06', description: 'Turn your choice from the farm into a gift. Tell us the occasion and the products you have in mind.', care: 'Gift contents, packaging, quantities and timing are arranged with the farm according to availability. Add your preferences in the note for the farm.' }
     } : {
-      fresh: { name: 'التين الطازج', tag: 'من ثمار الموسم', mark: '01', description: 'تين النادرية، يُقطف يدويًا في أحد رفيدة. متعة بسيطة على مائدتك، ولفتة جميلة لمن تحب.', care: 'الثمار الطازجة مرتبطة بالقطاف. اسألنا عن الأصناف المتاحة ودرجة النضج وموعد الاستلام، وتعليمات الحفظ المناسبة عند تأكيد طلبك.' },
-      dried: { name: 'التين المجفف · القطين', tag: 'مذاق من المؤونة', mark: '02', description: 'للتين حكاية أخرى حين يصبح قطينًا. مذاق مألوف في المؤونة العسيرية، تستمتع به وحده أو بجوار فنجان قهوة.', care: 'اسألنا عن أحجام العبوات المتاحة ومكوناتها، واتبع تعليمات الحفظ الخاصة بالعبوة التي تختارها.' },
-      paste: { name: 'عجينة التين', tag: 'لمائدتك ووصفاتك', mark: '03', description: 'طريقة أخرى للاستمتاع بمذاق التين، في وصفاتك ومخبوزاتك والإضافات التي تحبها.', care: 'أخبرنا كيف ترغب باستخدامها. نؤكد معك المكونات وحجم العبوة وتفاصيل الحفظ قبل الطلب.' },
-      seedling: { name: 'شتلات التين', tag: 'ابدأ حكايتك مع الأرض', mark: '04', description: 'ازرع صلتك الخاصة بشجرة التين، واكتشف الشتلات المتاحة من مشاتل النادرية.', care: 'شاركنا مدينتك ومساحة الزراعة. اسأل المشتل عن الصنف وحجم الشتلة وطريقة الزراعة والعناية المناسبة لظروف منطقتك.' },
-      cuttings: { name: 'عُقل التين', tag: 'لأهل الزراعة', mark: '05', description: 'عُقل تين لمن يحب رحلة الغرس والإكثار. يتحدد توفرها بحسب موسم التقليم.', care: 'تأكد من الصنف وتجهيز العُقل والوقت المناسب مع المشتل. نجاح التجذير والنمو يعتمد على ظروف الزراعة والعناية؛ اسأل عن الإرشادات المناسبة لك.' },
-      gift: { name: 'هدية من النادرية', tag: 'اختيار يحمل معنى', mark: '06', description: 'اجعل اختيارك من المزرعة هدية لطيفة. أخبرنا بالمناسبة والمنتجات التي ترغب بإهدائها.', care: 'محتويات الهدية والتغليف والكميات والموعد تُنسّق مع المزرعة بحسب المتاح. أضف ما تفضله في ملاحظات الاستفسار.' }
+      fresh: { name: 'التين الطازج', tag: 'من ثمار الموسم', mark: '01', description: 'تين النادرية، يُقطف يدويًا في أحد رفيدة. متعة بسيطة على مائدتك، ولفتة جميلة لمن تحب.', care: 'توفّر الثمار الطازجة مرتبط بموسم القطاف. اسألنا عن الأصناف المتاحة ودرجة النضج وموعد الاستلام، وتعليمات الحفظ المناسبة عند تأكيد طلبك.' },
+      dried: { name: 'القطين', tag: 'مذاق من المؤونة', mark: '02', description: 'للتين حكاية أخرى حين يصبح قطينًا. مذاق مألوف في المؤونة العسيرية، تستمتع به وحده أو مع فنجان قهوة.', care: 'اسألنا عن أحجام العبوات المتاحة ومكوناتها وطريقة حفظها.' },
+      paste: { name: 'عجينة التين', tag: 'لمائدتك ووصفاتك', mark: '03', description: 'طريقة أخرى للاستمتاع بمذاق التين، في وصفاتك ومخبوزاتك والإضافات التي تحبها.', care: 'أخبرنا كيف ترغب في استخدامها. نؤكد معك المكونات وحجم العبوة وتفاصيل الحفظ قبل الطلب.' },
+      seedling: { name: 'شتلات التين', tag: 'ابدأ حكايتك مع الأرض', mark: '04', description: 'ازرع شجرة تين بيدك، واختر من الشتلات المتاحة في مشاتل النادرية.', care: 'شاركنا مدينتك ومساحة الزراعة. اسألنا عن الصنف وحجم الشتلة وطريقة الزراعة والعناية المناسبة لظروف منطقتك.' },
+      cuttings: { name: 'عُقل التين', tag: 'لأهل الزراعة', mark: '05', description: 'عُقل تين لمن يحب رحلة الغرس والإكثار. يتحدد توفرها بحسب موسم التقليم.', care: 'نؤكد معك الصنف وطريقة تجهيز العُقل والوقت المناسب لزراعتها. نجاح التجذير والنمو يعتمد على ظروف الزراعة والعناية؛ اسألنا عن الإرشادات المناسبة لك.' },
+      gift: { name: 'هدية من النادرية', tag: 'اختيار يحمل معنى', mark: '06', description: 'اجعل اختيارك من المزرعة هدية لطيفة. أخبرنا بالمناسبة والمنتجات التي ترغب في إهدائها.', care: 'ننسّق معك محتويات الهدية والتغليف والكميات والموعد بحسب المتاح. اكتب ما تفضله في خانة الملاحظات.' }
     };
 
     function element(tag, className, text) {
@@ -76,6 +76,27 @@
       if (className) node.className = className;
       if (text !== undefined) node.textContent = text;
       return node;
+    }
+
+    // Phosphor icons (regular), the same set the page uses, so dialogs carry no text glyph icons.
+    var iconPaths = {
+      x: 'M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z',
+      minus: 'M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128Z',
+      plus: 'M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z',
+      arrow: 'M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z',
+      plant: 'M247.63,47.89a8,8,0,0,0-7.52-7.52c-51.76-3-93.32,12.74-111.18,42.22-11.8,19.49-11.78,43.16-.16,65.74a71.34,71.34,0,0,0-14.17,27L98.33,159c7.82-16.33,7.52-33.35-1-47.49-13.2-21.79-43.67-33.47-81.5-31.25a8,8,0,0,0-7.52,7.52c-2.230,37.83,9.46,68.3,31.25,81.5A45.82,45.82,0,0,0,63.44,176,54.58,54.58,0,0,0,87,170.33l25,25V224a8,8,0,0,0,16,0V194.51a55.61,55.61,0,0,1,12.27-35,73.91,73.91,0,0,0,33.31,8.4,60.9,60.9,0,0,0,31.83-8.86C234.89,141.21,250.67,99.65,247.63,47.89ZM47.81,155.6C32.47,146.31,23.79,124.32,24,96c28.32-.24,50.31,8.47,59.6,23.81,4.85,8,5.64,17.33,2.46,26.94L61.65,122.34a8,8,0,0,0-11.31,11.31l24.41,24.41C65.14,161.24,55.82,160.45,47.81,155.6Zm149.31-10.22c-13.4,8.11-29.15,8.73-45.15,2l53.69-53.7a8,8,0,0,0-11.31-11.31L140.65,136c-6.76-16-6.15-31.76,2-45.15,13.94-23,47-35.82,89.33-34.83C232.94,98.34,220.14,131.44,197.12,145.38Z'
+    };
+    function icon(name, className) {
+      var namespace = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(namespace, 'svg');
+      svg.setAttribute('viewBox', '0 0 256 256');
+      svg.setAttribute('fill', 'currentColor');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('class', 'icon' + (className ? ' ' + className : ''));
+      var path = document.createElementNS(namespace, 'path');
+      path.setAttribute('d', iconPaths[name]);
+      svg.appendChild(path);
+      return svg;
     }
 
     function button(className, text, label) {
@@ -99,8 +120,14 @@
     }
 
     function readBasket() {
-      try { return validBasket(JSON.parse(window.localStorage.getItem(storageKey))); }
+      var saved;
+      try { saved = window.localStorage.getItem(storageKey); }
       catch (error) { storageAvailable = false; return Object.create(null); }
+      try { return validBasket(JSON.parse(saved)); }
+      catch (error) {
+        try { window.localStorage.removeItem(storageKey); } catch (ignore) { /* storage still usable for new writes */ }
+        return Object.create(null);
+      }
     }
 
     var basket = readBasket();
@@ -132,11 +159,26 @@
       return Object.keys(basket).reduce(function (sum, id) { return sum + basket[id]; }, 0);
     }
 
+    var lastCount = null;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     function updateCounts() {
       var count = totalItems();
       document.querySelectorAll('[data-cart-count]').forEach(function (node) {
         node.textContent = number.format(count);
-        node.setAttribute('aria-label', labels.selectionCount(count));
+        var owner = node.closest('button');
+        if (owner) owner.setAttribute('aria-label', labels.open + labels.separator + labels.selectionCount(count));
+        if (lastCount !== null && count !== lastCount && !reduceMotion.matches && node.animate) {
+          node.animate([{ transform: 'scale(.85)' }, { transform: 'scale(1)' }], { duration: 500, easing: 'cubic-bezier(.22,1,.36,1)' });
+        }
+      });
+      lastCount = count;
+      document.querySelectorAll('.product-card[data-product]').forEach(function (card) {
+        var quantity = basket[card.dataset.product] || 0;
+        var add = card.querySelector('[data-order]');
+        card.classList.toggle('is-picked', quantity > 0);
+        if (!add) return;
+        if (quantity) add.dataset.qty = number.format(quantity);
+        else delete add.dataset.qty;
       });
       if (selectionCount) selectionCount.textContent = labels.selectionCount(count);
       if (clearButton) clearButton.hidden = count === 0;
@@ -150,12 +192,15 @@
       dialog.setAttribute('aria-modal', 'true');
       if (!dialog.parentNode) document.body.appendChild(dialog);
       var shell = element('div', 'exp-dialog-shell');
-      var close = button('exp-close', '×', labels.close);
+      var close = button('exp-close', undefined, labels.close);
+      close.appendChild(icon('x'));
       close.addEventListener('click', function () { closeDialog(dialog); });
       shell.appendChild(close);
       dialog.appendChild(shell);
+      var pressedOnBackdrop = false;
+      dialog.addEventListener('pointerdown', function (event) { pressedOnBackdrop = event.target === dialog; });
       dialog.addEventListener('click', function (event) {
-        if (event.target === dialog) {
+        if (event.target === dialog && pressedOnBackdrop) {
           var rect = dialog.getBoundingClientRect();
           if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeDialog(dialog);
         }
@@ -169,9 +214,10 @@
       dialog.addEventListener('keydown', function (event) {
         if (event.key === 'Escape' && typeof dialog.close !== 'function') { event.preventDefault(); closeDialog(dialog); }
         if (event.key !== 'Tab') return;
-        var focusable = Array.from(dialog.querySelectorAll('button, a[href], input, textarea, select, [tabindex="0"]')).filter(function (node) {
-          return !node.disabled && node.getAttribute('aria-disabled') !== 'true' && node.getClientRects().length > 0;
+        var focusable = Array.from(dialog.querySelectorAll('button, a[href], input, textarea, select, summary, [tabindex="0"]')).filter(function (node) {
+          return !node.disabled && node.getAttribute('aria-disabled') !== 'true' && !node.closest('details:not([open]) > :not(summary)') && node.getClientRects().length > 0;
         });
+        if (!focusable.length) return;
         var first = focusable[0];
         var last = focusable[focusable.length - 1];
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
@@ -295,13 +341,15 @@
       if (!count) { checkout.removeAttribute('href'); return; }
       var lines = [labels.messageIntro, ''];
       Object.keys(products).forEach(function (id) {
-        if (basket[id]) lines.push('• ' + products[id].name + ' — ' + labels.messageQuantity + ': ' + basket[id]);
+        if (basket[id]) lines.push('• ' + products[id].name + ' — ' + labels.messageQuantity + ': ' + number.format(basket[id]));
       });
-      lines.push('');
+      var details = [];
       [[nameInput, labels.contactName], [cityInput, labels.contactCity], [noteInput, labels.contactNote]].forEach(function (field) {
         var value = field[0].value.trim().slice(0, field[0].maxLength);
-        if (value) lines.push(field[1] + ': ' + value);
+        if (value) details.push(field[1] + ': ' + value);
       });
+      // One blank line between blocks, whether or not the optional details were filled in.
+      if (details.length) lines = lines.concat('', details);
       lines.push('', labels.messageEnd);
       checkout.href = 'https://wa.me/966503184880?text=' + encodeURIComponent(lines.join('\n'));
     }
@@ -311,10 +359,12 @@
       var ids = Object.keys(products).filter(function (id) { return basket[id]; });
       if (!ids.length) {
         var empty = element('div', 'exp-empty');
-        var motif = element('span', 'exp-empty-mark', '✳');
+        var motif = element('span', 'exp-empty-mark');
+        motif.appendChild(icon('plant'));
         motif.setAttribute('aria-hidden', 'true');
         empty.append(motif, element('h3', '', labels.emptyTitle), element('p', '', labels.emptyText));
-        var browse = button('exp-text-button', labels.browse + (english ? ' ↗' : ' ↖'));
+        var browse = button('exp-text-button', labels.browse);
+        browse.appendChild(icon('arrow', 'dir-arrow'));
         browse.addEventListener('click', function () {
           closeDialog(order.dialog);
           var productsSection = document.getElementById('products');
@@ -339,13 +389,14 @@
         var controls = element('div', 'exp-item-controls');
         var quantity = element('div', 'exp-quantity');
         function itemButton(control, text, label, handler) {
-          var node = button(control === 'remove' ? 'exp-remove' : '', text, label + ' ' + product.name);
+          var node = button(control === 'remove' ? 'exp-remove' : '', iconPaths[text] ? undefined : text, label + ' ' + product.name);
+          if (iconPaths[text]) node.appendChild(icon(text));
           node.dataset.itemId = id;
           node.dataset.itemControl = control;
           node.addEventListener('click', handler);
           return node;
         }
-        var minus = itemButton('decrease', '−', labels.decrease, function () { setQuantity(id, basket[id] - 1, 'decrease'); });
+        var minus = itemButton('decrease', 'minus', labels.decrease, function () { setQuantity(id, basket[id] - 1, 'decrease'); });
         minus.disabled = basket[id] <= 1;
         var quantityInput = element('input');
         quantityInput.type = 'number';
@@ -357,7 +408,7 @@
         quantityInput.dataset.itemId = id;
         quantityInput.dataset.itemControl = 'quantity';
         quantityInput.setAttribute('aria-label', labels.quantity + ': ' + product.name);
-        var plus = itemButton('increase', '+', labels.increase, function () { setQuantity(id, basket[id] + 1, 'increase'); });
+        var plus = itemButton('increase', 'plus', labels.increase, function () { setQuantity(id, basket[id] + 1, 'increase'); });
         plus.disabled = basket[id] >= maximumQuantity;
         function syncTypedQuantity(finalize) {
           var value = Number(quantityInput.value);
@@ -382,7 +433,7 @@
           renderBasket();
           var nextRemove = basketList.querySelector('[data-item-control="remove"]');
           (nextRemove || select).focus({ preventScroll: true });
-          notify(product.name + ' — ' + labels.removed);
+          notify(labels.removed(product.name));
         });
         controls.append(quantity, remove);
         row.append(mark, description, controls);
@@ -410,7 +461,7 @@
       basket[id] = (basket[id] || 0) + 1;
       persistBasket();
       renderBasket();
-      notify(products[id].name + ' — ' + labels.added);
+      notify(labels.added(products[id].name));
     }
 
     var detail = createDialog('productDialog', 'productDialogTitle');
@@ -443,7 +494,8 @@
       care.append(element('h3', '', labels.careTitle), element('p', '', product.care));
       content.appendChild(care);
       content.appendChild(element('p', 'exp-availability', labels.availability));
-      var add = button('exp-primary', labels.inquire + ' +');
+      var add = button('exp-primary', labels.inquire);
+      add.appendChild(icon('plus'));
       add.addEventListener('click', function () {
         var origin = detail.dialog.returnFocus;
         closeDialog(detail.dialog);
@@ -473,13 +525,22 @@
     var filters = Array.from(document.querySelectorAll('[data-filter]'));
     var cards = Array.from(document.querySelectorAll('[data-product-category]'));
     var countNode = document.getElementById('productCount');
-    function filterProducts(filter) {
+    function filterProducts(filter, animate) {
       var visible = 0;
       cards.forEach(function (card) {
         var show = filter === 'all' || card.dataset.productCategory.split(' ').indexOf(filter) !== -1;
         card.hidden = !show;
         if (show) visible += 1;
       });
+      if (animate && !reduceMotion.matches && Element.prototype.animate) {
+        var order = 0;
+        cards.forEach(function (card) {
+          if (card.hidden || !card.classList.contains('is-in')) return;
+          card.animate([{ opacity: 0, transform: 'translateY(10px)', filter: 'blur(4px)' }, { opacity: 1, transform: 'none', filter: 'none' }],
+            { duration: 500, delay: order * 60, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
+          order += 1;
+        });
+      }
       filters.forEach(function (node) {
         var active = node.dataset.filter === filter;
         node.setAttribute('aria-pressed', String(active));
@@ -489,7 +550,7 @@
       if (countNode) countNode.textContent = labels.count(visible);
     }
     if (countNode) { countNode.setAttribute('aria-live', 'polite'); countNode.setAttribute('aria-atomic', 'true'); }
-    filters.forEach(function (node) { node.addEventListener('click', function () { filterProducts(node.dataset.filter); }); });
+    filters.forEach(function (node) { node.addEventListener('click', function () { filterProducts(node.dataset.filter, true); }); });
     if (cards.length) filterProducts('all');
 
     // The full height menu panel fades in while its links arrive in reading order (style.css).
@@ -503,13 +564,26 @@
       menuButton.setAttribute('aria-label', open ? labels.closeMenu : labels.openMenu);
       mobileNav.inert = !open;
       mobileNav.setAttribute('aria-hidden', String(!open));
+      ['main', '.footer', '.wa-float'].forEach(function (selector) {
+        var node = document.querySelector(selector);
+        if (node) node.inert = open;
+      });
       if (!open && returnFocus) menuButton.focus();
     }
     if (menuButton && mobileNav) {
       setMenu(false);
       menuButton.addEventListener('click', function () { setMenu(!menuOpen()); });
       mobileNav.addEventListener('click', function (event) {
-        if (event.target.closest('a, [data-order]')) setMenu(false);
+        var link = event.target.closest('a, [data-order]');
+        if (!link) return;
+        setMenu(false);
+        var hash = link.getAttribute('href');
+        var target = hash && hash.charAt(0) === '#' ? document.getElementById(hash.slice(1)) : null;
+        var heading = target && target.querySelector('h1, h2');
+        if (heading) {
+          heading.tabIndex = -1;
+          window.setTimeout(function () { heading.focus({ preventScroll: true }); }, 0);
+        }
       });
       document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape' && menuOpen() && !document.querySelector('.exp-dialog[open]')) setMenu(false, true);

@@ -8,7 +8,7 @@
 .exp-dialog button{cursor:pointer}
 .exp-dialog button:disabled{cursor:default}
 .exp-dialog h2:focus{outline:none}
-.exp-close{position:absolute;z-index:2;top:16px;inset-inline-end:16px;display:grid;place-items:center;width:40px;height:40px;padding:0;border:1px solid var(--line-strong);border-radius:9999px;background:var(--raised);font:400 24px/1 var(--font);transition:background-color .3s var(--ease),transform .3s var(--ease)}
+.exp-close{position:absolute;z-index:2;top:16px;inset-inline-end:16px;display:grid;place-items:center;width:40px;height:40px;padding:0;border:1px solid var(--line-strong);border-radius:9999px;background:var(--raised);font:400 24px/1 var(--font);transition:background-color .3s var(--ease),transform .5s var(--ease)}
 .exp-close:hover{background:var(--high);transform:rotate(90deg)}
 .exp-close:active{transform:scale(.98)}
 .exp-dialog-header{padding-inline-end:48px}
@@ -41,7 +41,7 @@
 .exp-input{padding:12px}
 .exp-input::placeholder{color:var(--muted);opacity:1}
 textarea.exp-input{display:block;min-height:96px;resize:vertical}
-.exp-secondary{padding:8px 12px;border:1px solid var(--line-strong);border-radius:9999px;background:transparent;font:600 14px/20px var(--font);transition:background-color .3s var(--ease),transform .3s var(--ease)}
+.exp-secondary{padding:8px 12px;border:1px solid var(--line-strong);border-radius:9999px;background:transparent;font:600 14px/20px var(--font);transition:background-color .3s var(--ease),transform .5s var(--ease)}
 .exp-secondary:hover{background:var(--raised)}
 .exp-secondary:active{transform:scale(.98)}
 .exp-optional{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--deep)}
@@ -51,7 +51,7 @@ textarea.exp-input{display:block;min-height:96px;resize:vertical}
 .exp-field-wide{grid-column:1 / -1}
 .exp-field label{display:block;margin-bottom:8px;font:500 14px/20px var(--font);color:var(--soft)}
 .exp-dialog-status{min-height:24px;padding-top:8px;font:500 14px/20px var(--font);color:var(--leaf)}
-.exp-primary,.exp-dialog .exp-primary{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;border:1px solid var(--text);border-radius:9999px;background:var(--text);color:var(--bg);font:600 16px/24px var(--font);text-decoration:none;transition:background-color .3s var(--ease),transform .3s var(--ease)}
+.exp-primary,.exp-dialog .exp-primary{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;border:1px solid var(--text);border-radius:9999px;background:var(--text);color:var(--bg);font:600 16px/24px var(--font);text-decoration:none;transition:background-color .3s var(--ease),transform .5s var(--ease)}
 .exp-primary:hover{background:#fff;transform:translateY(-2px)}
 .exp-primary:active{transform:scale(.98)}
 .exp-primary[aria-disabled=true]{opacity:.4;cursor:default;transform:none}
@@ -68,7 +68,7 @@ textarea.exp-input{display:block;min-height:96px;resize:vertical}
 .exp-product-dialog .exp-dialog-shell{padding:8px}
 .exp-product-content{display:grid;grid-template-columns:280px 1fr;gap:8px}
 .exp-detail-art{position:relative;min-height:240px;overflow:hidden;border-radius:16px;background:var(--raised)}
-.exp-detail-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(var(--zoom,1))}
+.exp-detail-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .exp-detail-number{position:absolute;top:12px;inset-inline-start:12px;padding:4px 8px;border-radius:9999px;background:rgb(19 18 9 / .6);font:600 12px/16px var(--font)}
 .exp-detail-copy{padding:40px 24px 24px}
 .exp-detail-description{font-size:16px;line-height:24px;color:var(--soft)}
@@ -79,6 +79,15 @@ textarea.exp-input{display:block;min-height:96px;resize:vertical}
 .exp-detail-copy .exp-primary{width:100%}
 .exp-toast{position:fixed;z-index:999;bottom:24px;left:50%;width:max-content;max-width:calc(100vw - 32px);padding:12px 16px;border:1px solid var(--line-strong);border-radius:9999px;background:var(--raised);box-shadow:0 12px 32px rgb(0 0 0 / .4);font:500 14px/20px var(--font);text-align:center;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:opacity .3s var(--ease),transform .5s var(--ease)}
 .exp-toast.is-visible{opacity:1;transform:translate(-50%,0)}
+.exp-close .icon{width:20px;height:20px}
+.exp-quantity button{display:grid;place-items:center}
+.exp-quantity button .icon{width:16px;height:16px}
+.exp-empty-mark .icon{width:32px;height:32px}
+.exp-primary .icon,.exp-text-button .icon{width:20px;height:20px}
+.exp-text-button{display:inline-flex;align-items:center;gap:8px}
+[dir=ltr] .exp-text-button .dir-arrow{transform:scaleX(-1)}
+/* M9: form and stepper boundaries reach 3:1 against their surface. */
+.exp-select,.exp-input,.exp-quantity{border-color:#6B6B6B}
 .exp-sr{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important}
 
 @media (prefers-reduced-motion:no-preference){

@@ -5,10 +5,24 @@
     <loc>https://alnaderia.com/</loc>
     <xhtml:link rel="alternate" hreflang="ar" href="https://alnaderia.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://alnaderia.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alnaderia.com/"/>
   </url>
   <url>
     <loc>https://alnaderia.com/en/</loc>
     <xhtml:link rel="alternate" hreflang="ar" href="https://alnaderia.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://alnaderia.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alnaderia.com/"/>
+  </url>
+  <url>
+    <loc>https://alnaderia.com/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alnaderia.com/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alnaderia.com/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alnaderia.com/privacy.html"/>
+  </url>
+  <url>
+    <loc>https://alnaderia.com/en/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alnaderia.com/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alnaderia.com/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alnaderia.com/privacy.html"/>
   </url>
 </urlset>

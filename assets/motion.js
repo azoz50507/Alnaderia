@@ -34,7 +34,7 @@
       if (img.complete && img.naturalWidth) settle();
       else {
         img.addEventListener('load', settle, { once: true });
-        img.addEventListener('error', function () { if (wrap) wrap.classList.add('is-done'); }, { once: true });
+        img.addEventListener('error', function () { if (wrap) wrap.classList.add('is-done', 'is-error'); }, { once: true });
       }
     });
   }
@@ -58,15 +58,17 @@
       nodes.forEach(function (node) { node.classList.add('is-in', 'is-shown'); });
       return;
     }
-    var observer = new IntersectionObserver(function (entries) {
+    function reveal(entries, observer) {
       staggerBatch(entries);
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         entry.target.classList.add(entry.target.classList.contains('ph') ? 'is-shown' : 'is-in');
         observer.unobserve(entry.target);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-    nodes.forEach(function (node) { observer.observe(node); });
+    }
+    var early = new IntersectionObserver(reveal, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    var cards = new IntersectionObserver(reveal, { threshold: 0.3 });
+    nodes.forEach(function (node) { (node.classList.contains('reveal-card') ? cards : early).observe(node); });
   }
 
   /* Navigation: denser pill after scrolling, current section marked, WhatsApp button after the hero. */
@@ -92,7 +94,7 @@
     }
 
     var links = Array.prototype.slice.call(document.querySelectorAll('[data-spy]'));
-    var sections = links.map(function (link) { return document.getElementById(link.dataset.spy); }).filter(Boolean);
+    var sections = Array.prototype.slice.call(document.querySelectorAll('main > section[id]:not(#home)'));
     var current = null;
     function mark(id) {
       if (id === current) return;
@@ -161,25 +163,27 @@
     var reply = card.querySelector('.bubble-in');
     var glyphs = Array.from(typed.textContent);
     var total = glyphs.length;
+    var keep = glyphs.indexOf('\n') + 1;
+    var items = total - keep;
     var shown = total;
-    var deleteStep = 0.02;
-    var typeStep = 0.055;
-    var clear = 0.5;
-    var deleted = clear + total * deleteStep;
-    var resume = deleted + 0.6;
-    var typedAt = resume + total * typeStep;
+    var deleteStep = 0.015;
+    var typeStep = 0.045;
+    var clear = 0.4;
+    var deleted = clear + items * deleteStep;
+    var resume = deleted + 0.5;
+    var typedAt = resume + items * typeStep;
     var sentAt = typedAt + 0.3;
-    var replyAt = sentAt + 0.5;
-    var period = replyAt + 3;
+    var replyAt = sentAt + 0.4;
+    var period = replyAt + 2;
     return function (time) {
       var t = time % period;
       var count;
       if (t < clear) count = total;
       else if (t < deleted) count = Math.ceil(total - (t - clear) / deleteStep);
-      else if (t < resume) count = 0;
-      else if (t < typedAt) count = Math.floor((t - resume) / typeStep);
+      else if (t < resume) count = keep;
+      else if (t < typedAt) count = keep + Math.floor((t - resume) / typeStep);
       else count = total;
-      count = clamp(count, 0, total);
+      count = clamp(count, keep, total);
       if (count !== shown) { typed.textContent = glyphs.slice(0, count).join(''); shown = count; }
       var typing = t >= clear && t < typedAt + 0.2;
       var idle = t >= deleted && t < resume;
@@ -196,7 +200,7 @@
     var start = 0.9;
     var step = 0.7;
     var resultAt = start + rows.length * step + 0.1;
-    var period = resultAt + 3.2;
+    var period = resultAt + 2;
     return function (time) {
       var t = time % period;
       rows.forEach(function (row, index) {
@@ -297,7 +301,9 @@
     });
     var frameId = 0;
     var last = 0;
+    function paused() { return root.classList.contains('paused'); }
     function frame(now) {
+      if (paused()) { frameId = 0; return; }
       var dt = Math.min(now - last, 64) / 1000;
       last = now;
       var active = false;
@@ -322,12 +328,36 @@
           story.startAt = performance.now() + 1700;
         }
       });
-      if (!frameId && list.some(function (story) { return story.visible; })) {
-        last = performance.now();
-        frameId = requestAnimationFrame(frame);
-      }
+      wake();
     }, { threshold: 0.3 });
+    function wake() {
+      if (frameId || paused() || !list.some(function (story) { return story.visible; })) return;
+      last = performance.now();
+      frameId = requestAnimationFrame(frame);
+    }
+    root.addEventListener('naderia:motion', wake);
     list.forEach(function (story) { observer.observe(story.card); });
+  }
+
+  /* WCAG 2.2.2: a visible control pauses every looping animation (ticker, stories, pulses). */
+  function motionToggle() {
+    var toggle = document.querySelector('[data-motion-toggle]');
+    if (!toggle) return;
+    if (reduce) { toggle.hidden = true; return; }
+    var key = 'naderia.motion';
+    function apply(pause, remember) {
+      root.classList.toggle('paused', pause);
+      toggle.setAttribute('aria-pressed', String(pause));
+      if (remember) {
+        try { if (pause) window.localStorage.setItem(key, 'paused'); else window.localStorage.removeItem(key); }
+        catch (error) { /* the choice still applies for this visit */ }
+      }
+      root.dispatchEvent(new CustomEvent('naderia:motion'));
+    }
+    var saved = false;
+    try { saved = window.localStorage.getItem(key) === 'paused'; } catch (error) { saved = false; }
+    apply(saved, false);
+    toggle.addEventListener('click', function () { apply(!root.classList.contains('paused'), true); });
   }
 
   function init() {
@@ -335,6 +365,7 @@
     reveals();
     navigation();
     tagline();
+    motionToggle();
     stories();
     if (reduce) { root.classList.add('is-ready'); return; }
     var started = false;

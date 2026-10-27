@@ -25,6 +25,7 @@ ICONS = {
  'info':'<path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z"/>',
  'sparkle':'<path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"/>',
  'chat':'<path d="M168,112a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,112Zm-8,24H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Zm72-8A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.53a7.85,7.85,0,0,1,2.53-.42,8,8,0,0,1,4,1.08A88,88,0,0,0,216,128Z"/>',
+ 'pause':'<path d="M200,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm0,176H160V48h40ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Zm0,176H56V48H96Z"/>',
 }
 def icon(name, cls=''):
  return f'<svg class="icon {cls}" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">{ICONS[name]}</svg>'
@@ -33,57 +34,69 @@ def build(en=False):
  def t(ar,eng): return eng if en else ar
  def version(filename): return hashlib.sha256((ROOT/'assets'/filename).read_bytes()).hexdigest()[:10]
  base='../' if en else ''
+ variants={'fig-harvest.webp':(640,1024,1536),'fig-pantry.webp':(640,1024,1536),'fig-nursery.webp':(480,768,1024)}
+ def pic(img,sizes):
+  # Responsive WebP sizes made from the PNG masters; the largest width is the original file.
+  stem=img[:-5]; widths=variants[img]
+  files=[f'{stem}-{w}.webp' if w!=widths[-1] else img for w in widths]
+  srcset=', '.join(f'{base}assets/{f} {w}w' for f,w in zip(files,widths))
+  return f'src="{base}assets/{img}" srcset="{srcset}" sizes="{sizes}"'
  lang='en' if en else 'ar'
  direction='ltr' if en else 'rtl'
  name=t('مزرعة ومشاتل النادرية','Naderia Farm & Nurseries')
  title=t('النادرية | تين عسير الطازج، من غصنه إلى بيتك','Naderia | Fresh Asir figs, from the branch to your home')
- desc=t('تين طازج وقطين وعجينة تين وشتلات من مزرعة النادرية في الفرعين، أحد رفيدة، عسير. اختر ما تحب ونسّق طلبك مباشرة مع المزرعة عبر واتساب.','Fresh figs, dried figs, fig paste and saplings from Naderia Farm in Al Far’ayn, Ahad Rafidah, Asir. Choose what you like and arrange your order directly with the farm on WhatsApp.')
- wa='https://wa.me/966503184880?text='+quote(t('السلام عليكم، أرغب بالاستفسار عن منتجات مزرعة النادرية.','Hello, I would like to ask about Naderia Farm products.'))
- visit='https://wa.me/966503184880?text='+quote(t('السلام عليكم، أرغب بتنسيق زيارة لمزرعة النادرية. ما المواعيد المتاحة وموقع المزرعة؟','Hello, I would like to arrange a visit to Naderia Farm. Please share available times and the farm location.'))
- cta=t('اختر من حصاد الموسم','Choose from this season’s harvest')
+ desc=t('تين طازج وقطين وعجينة تين وشتلات من مزرعة النادرية في الفرعين، أحد رفيدة، عسير. اختر ما تحب ونسّق طلبك مباشرة مع المزرعة عبر واتساب.','Fresh figs, dried figs, fig paste and saplings from Naderia Farm in Al Far’ayn, Ahad Rafidah, Asir. Arrange your order with the farm on WhatsApp.')
+ wa='https://wa.me/966503184880?text='+quote(t('السلام عليكم، أرغب في الاستفسار عن منتجات مزرعة النادرية.','Hello, I would like to ask about Naderia Farm products.'))
+ visit='https://wa.me/966503184880?text='+quote(t('السلام عليكم، أرغب في تنسيق زيارة لمزرعة النادرية. أرجو إفادتي بالمواعيد المتاحة وموقع المزرعة.','Hello, I would like to arrange a visit to Naderia Farm. Please share available times and the farm location.'))
+ cta=t('اختر من خيرات النادرية','Choose from the Naderia harvest')
  arrow=icon('arrow','dir-arrow')
- nav_items=[('products',t('الخيرات','Harvest')),('why',t('لماذا النادرية','Why Naderia')),('story',t('حكايتنا','Our story')),('nursery',t('المشتل','Nursery')),('faq',t('الأسئلة','Questions'))]
+ nav_items=[('why',t('لماذا النادرية','Why Naderia')),('products',t('الخيرات','Harvest')),('story',t('حكايتنا','Our story')),('nursery',t('المشتل','Nursery')),('faq',t('الأسئلة','Questions'))]
  nav=''.join(f'<a href="#{id}" data-spy="{id}">{label}</a>' for id,label in nav_items)
- menu_links=''.join(f'<a href="#{id}" style="--i:{n}">{label}</a>' for n,(id,label) in enumerate(nav_items+[('contact',t('تواصل معنا','Contact'))]))
+ menu_links=''.join(f'<a href="#{id}" data-spy="{id}" style="--i:{n}">{label}</a>' for n,(id,label) in enumerate(nav_items+[('contact',t('تواصل معنا','Contact'))]))
 
  products=[
- ('fresh','fruit','fig-harvest.webp','58% 55%;--zoom:1',t('التين الطازج','Fresh figs'),t('من الغصن في وقته. ثمار تُقطف وتُفرز يدويًا بعناية.','Picked from the branch at the right moment, then sorted by hand.'),t('خيرات الموسم','Seasonal'),'01'),
- ('dried','pantry','fig-pantry.webp','30% 46%;--zoom:1.7',t('القطين الطبيعي','Naturally dried figs'),t('حلاوة التين في صورتها الأصيلة. رفيق القهوة ولحظات الضيافة.','The familiar sweetness of figs, naturally dried. Made for coffee and company.'),t('من المونة','Pantry'),'02'),
- ('paste','pantry','fig-pantry.webp','76% 62%;--zoom:1.9',t('عجينة التين','Fig paste'),t('نكهة غنية تمنح فطورك ووصفاتك وحلوياتك لمسة مختلفة.','A rich fig flavour for slow breakfasts, favourite recipes and homemade desserts.'),t('لمائدتك','For your table'),'03'),
- ('seedling','plants','fig-nursery.webp','50% 58%;--zoom:1',t('شتلات التين','Fig saplings'),t('ابدأ حكايتك مع الزراعة. نساعدك تختار الشتلة الأنسب لأرضك.','Start a growing story of your own. We help you choose one that suits your space.'),t('من المشتل','Nursery'),'04'),
- ('cuttings','plants','fig-nursery.webp','46% 24%;--zoom:1.5',t('عُقل التين','Fig cuttings'),t('خطوة صغيرة نحو شجرتك القادمة. تُنسَّق حسب موسم التقليم.','A small beginning for your next tree. Availability follows the pruning season.'),t('حسب الموسم','Seasonal'),'05'),
- ('gift','pantry','fig-harvest.webp','88% 80%;--zoom:2',t('هدية بطعم الجنوب','A taste of Asir to give'),t('اختر من خيراتنا، واسأل عن تغليف يليق بمن تحب.','Choose a little of our harvest and ask us about gift packaging.'),t('تنسيق هدايا','Gifts'),'06'),
+ ('fresh','fruit',t('التين الطازج','Fresh figs'),t('يُقطف من غصنه في أوانه، ويُفرز يدويًا بعناية.','Picked from the branch at the right moment, then sorted by hand.'),t('خيرات الموسم','Seasonal fruit'),'01'),
+ ('dried','pantry',t('القطين','Dried figs · Qateen'),t('حلاوة التين في صورتها الأصيلة. رفيق القهوة ولحظات الضيافة.','The sweetness of figs in its traditional form. Made for coffee and company.'),t('من المؤونة','Pantry'),'02'),
+ ('paste','pantry',t('عجينة التين','Fig paste'),t('نكهة غنية تمنح فطورك ووصفاتك وحلوياتك لمسة مختلفة.','A rich fig flavour for slow breakfasts, favourite recipes and homemade desserts.'),t('لمائدتك','For your table'),'03'),
+ ('seedling','plants',t('شتلات التين','Fig saplings'),t('ابدأ حكايتك مع الزراعة. نساعدك في اختيار الشتلة الأنسب لمنطقتك.','Plant a fig tree of your own. We will help you choose the sapling best suited to your region.'),t('من المشتل','Nursery'),'04'),
+ ('cuttings','plants',t('عُقل التين','Fig cuttings'),t('خطوة صغيرة نحو شجرتك القادمة. يرتبط توفرها بموسم التقليم.','A small beginning for your next tree. Availability follows the pruning season.'),t('حسب الموسم','Seasonal'),'05'),
+ ('gift','pantry',t('هدية من النادرية','A gift from Naderia'),t('اختر من خيراتنا، واسأل عن تغليف يليق بمن تحب.','Choose a little of our harvest and ask us about gift packaging.'),t('تنسيق هدايا','Gifts'),'06'),
  ]
+ def product_pic(pid):
+  # Pre-cropped 4:3 frames made by scripts/make_images.py; phones never download the full masters.
+  files=sorted((ROOT/'assets'/'products').glob(f'{pid}-*.webp'),key=lambda f:int(f.stem.rsplit('-',1)[1]))
+  srcset=', '.join(f"{base}assets/products/{f.name} {f.stem.rsplit('-',1)[1]}w" for f in files)
+  return f'src="{base}assets/products/{files[-1].name}" srcset="{srcset}" sizes="(min-width:1024px) 380px, (min-width:640px) 46vw, 92vw"'
  cards=''
- for id,cat,img,pos,pname,description,tag,num in products:
+ for id,cat,pname,description,tag,num in products:
   cards+=f'''<article class="product-card reveal-card product-{id}" data-product-category="{cat}" data-product="{id}">
-    <div class="product-media ph-wrap"><img class="ph" src="{base}assets/{img}" style="object-position:{pos.split(";")[0]};transform-origin:{pos.split(";")[0]};{pos.split(";")[1]}" alt="{t('صورة تعبيرية: ','Illustrative image: ')}{pname}" width="720" height="540" loading="lazy" decoding="async"><span class="product-tag">{tag}</span></div>
+    <div class="product-media ph-wrap"><img class="ph" {product_pic(id)} alt="{t('صورة تعبيرية: ','Illustrative image: ')}{pname}" width="800" height="600" loading="lazy" decoding="async"><span class="product-tag">{tag}</span></div>
     <div class="product-body"><div class="product-title"><h3>{pname}</h3><span class="product-num">{num}</span></div><p>{description}</p>
-    <div class="product-foot"><span class="product-price">{t('السعر والتوفر عند الطلب','Price and availability on request')}</span><div class="product-actions"><button type="button" class="icon-btn" data-details="{id}" aria-label="{t('تفاصيل ','Details: ')}{pname}">{icon('info')}</button><button type="button" class="icon-btn icon-btn-solid" data-order="{id}" aria-label="{t('أضف ','Add ')}{pname}{t(' إلى طلبك',' to your selection')}">{icon('plus')}</button></div></div></div>
+    <div class="product-foot"><span class="product-price">{t('السعر والتوفر عند الطلب','Price and availability on request')}</span><div class="product-actions"><button type="button" class="icon-btn" data-details="{id}" aria-label="{t('تفاصيل ','Details: ')}{pname}">{icon('info')}</button><button type="button" class="icon-btn icon-btn-solid" data-order="{id}" aria-label="{t('أضف ','Add ')}{pname}{t(' إلى قائمة طلبك',' to your selection')}">{icon('plus')}</button></div></div></div>
   </article>'''
- filters=''.join(f'<button type="button" class="filter-btn{" active" if id=="all" else ""}" data-filter="{id}" aria-pressed="{"true" if id=="all" else "false"}">{label}</button>' for id,label in [('all',t('الكل','All')),('fruit',t('ثمار طازجة','Fresh fruit')),('pantry',t('مونة وهدايا','Pantry and gifts')),('plants',t('شتلات وعُقل','Plants and cuttings'))])
+ filters=''.join(f'<button type="button" class="filter-btn{" active" if id=="all" else ""}" data-filter="{id}" aria-pressed="{"true" if id=="all" else "false"}">{label}</button>' for id,label in [('all',t('الكل','All')),('fruit',t('ثمار طازجة','Fresh fruit')),('pantry',t('مؤونة وهدايا','Pantry and gifts')),('plants',t('شتلات وعُقل','Saplings and cuttings'))])
 
  faqs=[
- (t('كيف أطلب من النادرية؟','How do I place an order?'),t('أضف المنتجات التي تعجبك إلى قائمة طلبك، ثم راجع الكميات وأكمل عبر واتساب. نؤكد معك التوفر والسعر والوزن أو حجم الشتلة وطريقة الاستلام قبل تأكيد الطلب.','Add your favourite products to your selection, review the quantities, then continue on WhatsApp. We confirm availability, price, weight or plant size, and delivery details with you before confirming your order.')),
+ (t('كيف أطلب من النادرية؟','How do I place an order?'),t('أضف المنتجات التي تعجبك إلى قائمة طلبك، ثم راجع الكميات وأكمل عبر واتساب. نتفق معك على التوفر والسعر والوزن أو حجم الشتلة وطريقة الاستلام أو التوصيل قبل تأكيد الطلب.','Add your favourite products to your selection, review the quantities, then continue on WhatsApp. We go over availability, price, weight or sapling size, and collection or delivery with you before anything is confirmed.')),
  (t('هل أدفع شيئًا في الموقع؟','Do I pay anything on this site?'),t('لا. الموقع لا يأخذ أي دفعة ولا يتطلب تسجيلًا. يؤكد فريق المزرعة معك السعر وتفاصيل الطلب مباشرة عبر واتساب.','No. The site takes no payment and needs no account. The farm team confirms the price and order details with you directly on WhatsApp.')),
  (t('هل التين الطازج متوفر طوال العام؟','Are fresh figs available all year?'),t('التين الطازج منتج موسمي، ويتغير توفره بحسب القطف والنضج. راسلنا لمعرفة المتاح حاليًا، ويمكنك أيضًا الاستفسار عن القطين وعجينة التين.','Fresh figs are seasonal, and availability depends on ripeness and harvesting. Message us to find out what is available now, or ask about dried figs and fig paste.')),
- (t('هل يتوفر توصيل إلى منطقتي؟','Can you deliver to my area?'),t('ننسق التوصيل والشحن حسب موقعك ونوع المنتج والكمية. اذكر مدينتك في قائمة الطلب لنوضح لك الخيارات والتكلفة قبل التأكيد.','Delivery and shipping are arranged according to your location, product and quantity. Include your city in the selection so we can confirm the options and cost.')),
+ (t('هل يتوفر توصيل إلى منطقتي؟','Can you deliver to my area?'),t('ننسق التوصيل والشحن حسب موقعك ونوع المنتج والكمية. اكتب مدينتك في خانة «المدينة» قبل الإرسال، لنوضح لك الخيارات والتكلفة.','Delivery and shipping are arranged according to your location, product and quantity. Add your city before you send your selection, so we can explain the options and cost before anything is confirmed.')),
  (t('هل يمكن زيارة المزرعة؟','Can I visit the farm?'),t('يا مرحبًا بك. الزيارة بالتنسيق المسبق؛ تواصل معنا لنتفق على الموعد ونشاركك الموقع الدقيق للمزرعة.','You are very welcome. Visits are by prior arrangement; contact us to agree on a time and receive the exact farm location.')),
- (t('أرغب بالزراعة، أي شتلة أختار؟','Which plant should I choose?'),t('أخبرنا بمنطقتك ومكان الزراعة، سواء في الأرض أو في أصيص. نساعدك في اختيار الشتلة أو العُقلة المناسبة ونوضح لك تفاصيل العناية عند الطلب.','Tell us your region and whether you plan to grow in the ground or a pot. We help you choose a suitable sapling or cutting and discuss its care when you order.')),
- (t('هل تقبلون طلبات الجملة والمناسبات؟','Do you take wholesale and occasion orders?'),t('نعم، يمكنك التواصل لتنسيق كميات المحلات والمناسبات والهدايا. أرسل الكمية التقريبية والتاريخ المطلوب، ونؤكد لك ما يمكن توفيره.','Yes. Contact us about shops, occasions and gift orders. Share an approximate quantity and date, and we confirm what we can provide.')),
- (t('هل الصور في الموقع لمنتجاتكم الفعلية؟','Are the photos of your actual products?'),t('الصور الحالية تعبيرية، وليست تصويرًا لمنتجات المزرعة أو عبواتها. اسألنا عبر واتساب إن رغبت بصور لما هو متاح اليوم.','The current photos are illustrative, not photographs of the farm’s products or packaging. Ask us on WhatsApp if you would like to see what is available today.')),
+ (t('أرغب في الزراعة، فأي شتلة أختار؟','Which sapling should I choose?'),t('أخبرنا بمنطقتك ومكان الزراعة، سواء في الأرض أو في أصيص. نساعدك في اختيار الشتلة أو العُقلة المناسبة ونوضح لك تفاصيل العناية عند الطلب.','Tell us your region and whether you plan to grow in the ground or a pot. We will help you choose a suitable sapling or cutting and talk you through its care when you order.')),
+ (t('هل تقبلون طلبات الجملة والمناسبات؟','Do you take wholesale and event orders?'),t('نعم، تواصل معنا لتنسيق طلبات المحلات والمناسبات والهدايا. أرسل الكمية التقريبية والتاريخ المطلوب، ونؤكد لك ما يمكن توفيره.','Yes. Get in touch to arrange quantities for shops, events and gifts. Share an approximate quantity and date, and we will confirm what we can provide.')),
+ (t('هل الصور في الموقع لمنتجاتكم الفعلية؟','Are the images of your actual products?'),t('الصور الحالية تعبيرية، وليست تصويرًا لمنتجات المزرعة أو عبواتها. اسألنا عبر واتساب إن رغبت في صور لما هو متاح اليوم.','The current images are illustrative, not photographs of the farm’s products or packaging. Ask us on WhatsApp if you would like to see what is available today.')),
  ]
  faq_markup=''.join(f'<details class="faq-item"><summary><span>{q}</span><span class="faq-toggle" aria-hidden="true">{icon("plus")}</span></summary><p>{a}</p></details>' for q,a in faqs)
- schema={'@context':'https://schema.org','@type':'LocalBusiness','name':name,'alternateName':'Naderia Farm and Nurseries','url':'https://alnaderia.com/','logo':'https://alnaderia.com/assets/logo.png','image':'https://alnaderia.com/assets/og.png','telephone':'+966503184880','address':{'@type':'PostalAddress','addressCountry':'SA','addressRegion':'Asir','addressLocality':'Ahad Rafidah'},'founder':{'@type':'Person','name':'عبدالله عايض أبو درمان القحطاني'},'description':desc}
+ schema={'@context':'https://schema.org','@type':'LocalBusiness','@id':'https://alnaderia.com/#farm','name':name,'alternateName':t('Naderia Farm and Nurseries','مزرعة ومشاتل النادرية'),'url':'https://alnaderia.com/','logo':'https://alnaderia.com/assets/logo.png','image':'https://alnaderia.com/assets/logo.png','telephone':'+966503184880','address':{'@type':'PostalAddress','addressCountry':'SA','addressRegion':'Asir','addressLocality':'Ahad Rafidah'},'founder':{'@type':'Person','name':'عبدالله عايض أبو درمان القحطاني','alternateName':['أبو عبدالكريم','Abdullah Ayedh Abu Darman Al Qahtani']},'description':desc}
  faq_schema={'@context':'https://schema.org','@type':'FAQPage','mainEntity':[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in faqs]}
  brand=f'<span class="brand-mark"><img src="{base}favicon.svg" alt="" width="84" height="52"></span><span class="brand-word">{t("النادرية","Naderia")}</span>'
 
- ticker_items=[t('تين طازج','Fresh figs'),t('قطين طبيعي','Dried figs'),t('عجينة التين','Fig paste'),t('شتلات التين','Fig saplings'),t('عُقل التين','Fig cuttings'),t('هدايا من عسير','Gifts from Asir'),t('قطف وفرز يدوي','Picked by hand'),t('من مرتفعات عسير','From the Asir highlands')]
+ ticker_items=[t('تين طازج','Fresh figs'),t('قطين','Dried figs'),t('عجينة التين','Fig paste'),t('شتلات التين','Fig saplings'),t('عُقل التين','Fig cuttings'),t('هدايا من عسير','Gifts from Asir'),t('قطف وفرز يدوي','Picked and sorted by hand'),t('من مرتفعات عسير','From the Asir highlands')]
  ticker_set=''.join(f'<li>{icon("sparkle")}<span>{item}</span></li>' for item in ticker_items)
 
  chat_out=t('السلام عليكم، أبغى أطلب:\n• تين طازج × ٢\n• قطين × ١\nالمدينة: أبها','Hello Naderia, I’d like:\n• Fresh figs × 2\n• Dried figs × 1\nCity: Abha')
- chat_in=t('وعليكم السلام، حيّاك الله. نراجع التوفر ونرد عليك بالتفاصيل.','Welcome. We are checking availability and will reply with the details.')
- check_rows=''.join(f'<li class="check-row" style="--d:{0.3+n*0.06:.2f}s"><span class="check-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M6.5 12.5l3.5 3.5 7.5-8"/></svg></span><span>{label}</span></li>' for n,label in enumerate([t('التوفر','Availability'),t('الوزن أو حجم الشتلة','Weight or plant size'),t('السعر','Price'),t('الاستلام أو التوصيل','Collection or delivery')]))
+ chat_in=t('وعليكم السلام، حيّاك الله. نراجع التوفر ونرد عليك بالتفاصيل.','Hello, and welcome. We will check availability and get back to you with the details.')
+ check_rows=''.join(f'<li class="check-row" style="--d:{0.3+n*0.06:.2f}s"><span class="check-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M6.5 12.5l3.5 3.5 7.5-8"/></svg></span><span>{label}</span></li>' for n,label in enumerate([t('التوفر','Availability'),t('الوزن أو حجم الشتلة','Weight or sapling size'),t('السعر','Price'),t('الاستلام أو التوصيل','Collection or delivery')]))
  route_nodes=''.join(f'<li class="route-node" style="--d:{0.3+n*0.07:.2f}s"><span class="node-icon">{icon(i)}</span><span class="node-label">{label}</span></li>' for n,(i,label) in enumerate([('plant',t('المزرعة','Farm')),('hand',t('فرز يدوي','Hand sorting')),('package',t('تغليف','Packing')),('pin',t('مدينتك','Your city'))]))
  leaves=''.join(f'<g class="leaf" data-tilt="{tilt}" style="transform-origin:{ox}px {oy}px"><path d="{d}"/></g>' for tilt,ox,oy,d in [
   (1.0,160,126,'M160 126c-14-2-30-12-36-26 14-2 30 6 36 26z'),
@@ -100,11 +113,11 @@ def build(en=False):
       <div class="bubble bubble-out u" style="--d:.3s"><span class="bubble-ghost">{chat_out}</span><span class="bubble-typed"><span class="typed-text">{chat_out}</span><span class="caret"></span></span><span class="bubble-meta"><span>{t('٩:٤٢ م','9:42 PM')}</span><svg class="ticks" viewBox="0 0 18 12"><path d="M1 6.5l3 3L10.5 2.5"/><path d="M7 9.5l.5.5L16 2.5"/></svg></span></div>
       <div class="bubble bubble-in u" style="--d:.42s">{chat_in}</div>
      </div></div></div>
-    <div class="bento-copy u" style="--d:.2s"><h3>{t('طلبك في رسالة واحدة','Your order in one message')}</h3><p>{t('اجمع ما تحب في قائمة، ونحوّلها لرسالة واتساب جاهزة. بلا حساب ولا نماذج طويلة.','Gather what you like and we turn it into a ready WhatsApp message. No account, no long forms.')}</p></div>
+    <div class="bento-copy u" style="--d:.2s"><h3>{t('طلبك في رسالة واحدة','Your order in one message')}</h3><p>{t('اجمع ما تحب في قائمة، ونحوّلها إلى رسالة واتساب جاهزة. بلا حساب ولا نماذج طويلة.','Gather what you like and we turn it into a ready WhatsApp message. No account, no long forms.')}</p></div>
    </article>
    <article class="bento-card reveal-card" data-story="check">
     <div class="bento-visual checks" aria-hidden="true"><ul class="check-list">{check_rows}</ul><div class="check-result u" style="--d:.6s">{icon('seal')}<span>{t('جاهز للتأكيد','Ready to confirm')}</span></div></div>
-    <div class="bento-copy u" style="--d:.2s"><h3>{t('نؤكد كل شيء قبل أن تلتزم','Everything confirmed before you commit')}</h3><p>{t('التوفر والوزن والسعر وطريقة الاستلام نراجعها معك أولًا. لا يوجد دفع في الموقع.','Availability, weight, price and collection are agreed with you first. Nothing is paid on this site.')}</p></div>
+    <div class="bento-copy u" style="--d:.2s"><h3>{t('نتفق على كل التفاصيل قبل أن تؤكد طلبك','Every detail agreed before you confirm')}</h3><p>{t('نراجع معك أولًا التوفر والوزن والسعر وطريقة الاستلام، ولا تدفع شيئًا في الموقع.','Availability, weight, price and collection are agreed with you first. Nothing is paid on this site.')}</p></div>
    </article>
    <article class="bento-card reveal-card" data-story="grow">
     <div class="bento-visual grow" aria-hidden="true"><svg class="grow-svg u" style="--d:.2s" viewBox="0 0 320 196">
@@ -116,21 +129,21 @@ def build(en=False):
       <g class="leaf leaf-top" style="transform-origin:160px 94px"><path d="M160 94c-9-6-12-18-7-28 9 6 12 17 7 28z"/><path d="M160 94c9-6 12-18 7-28-9 6-12 17-7 28z"/></g>
       <path class="pot" d="M132 146h56l-6 30h-44z"/><rect class="pot-rim" x="128" y="140" width="64" height="10" rx="3"/>
     </svg></div>
-    <div class="bento-copy u" style="--d:.2s"><h3>{t('شتلة تناسب أرضك','A sapling that suits your soil')}</h3><p>{t('أخبرنا بمدينتك، وهل ستزرع في الأرض أو في أصيص، ونساعدك تختار الشتلة المناسبة.','Tell us your city and whether you will plant in the ground or a pot, and we help you choose.')}</p></div>
+    <div class="bento-copy u" style="--d:.2s"><h3>{t('شتلة تناسب منطقتك','A sapling chosen for your region')}</h3><p>{t('أخبرنا بمدينتك، وهل ستزرع في الأرض أو في أصيص، ونساعدك في اختيار الشتلة المناسبة.','Tell us your city and whether you will plant in the ground or a pot, and we will help you choose.')}</p></div>
    </article>
    <article class="bento-card bento-wide reveal-card" data-story="route">
     <div class="bento-visual route" aria-hidden="true"><div class="route-stage"><svg class="route-line"><line x1="0" y1="1" x2="100%" y2="1"/></svg><span class="route-pulse"></span><ol class="route-nodes">{route_nodes}</ol></div></div>
-    <div class="bento-copy u" style="--d:.2s"><h3>{t('من الفرعين إلى مدينتك','From Al Far’ayn to your city')}</h3><p>{t('نقطف ونفرز يدويًا في المزرعة، ثم ننسّق الاستلام أو التوصيل حسب منطقتك.','Picked and sorted by hand at the farm, then collection or delivery arranged for your area.')}</p></div>
+    <div class="bento-copy u" style="--d:.2s"><h3>{t('من الفرعين إلى مدينتك','From Al Far’ayn to your city')}</h3><p>{t('نقطف ونفرز يدويًا في المزرعة، ثم ننسّق الاستلام أو التوصيل حسب منطقتك.','We pick and sort by hand at the farm, then arrange collection or delivery for your area.')}</p></div>
    </article>
   </div>'''
 
- tagline_lines=[t('لا نبيعك تينًا من رفٍّ مجهول.','Not figs from a shelf somewhere.'),t('نقطفه من غصنٍ نعرفه،','Figs from branches we know,'),t('لمن يعرف الفرق من أول قضمة.','picked for people who taste the difference.')]
+ tagline_lines=[t('لا نبيعك تينًا من رفٍّ مجهول.','Not figs from a shelf somewhere.'),t('نقطفه من غصنٍ نعرفه،','Figs from branches we know,'),t('لمن يعرف الفرق من أول قضمة.','picked for people who can taste the difference.')]
  tagline=''.join(f'<span class="tl-line">{line}</span> ' for line in tagline_lines).strip()
 
  steps=''.join(f'<li class="step reveal" style="--d:{n*0.08:.2f}s"><span class="step-num">0{n+1}</span><h3>{a}</h3><p>{b}</p></li>' for n,(a,b) in enumerate([
- (t('اختر ما تحب','Pick what you like'),t('تصفّح الثمار والمونة والشتلات، واجمع اختياراتك في قائمة واحدة.','Browse the fruit, pantry and nursery, and gather your favourites in one list.')),
- (t('أرسلها عبر واتساب','Send it on WhatsApp'),t('تتحول قائمتك إلى رسالة جاهزة. راجعها وأرسلها متى ما كنت جاهزًا.','Your list becomes a ready message. Review it and send it when you are ready.')),
- (t('نؤكد ونجهّز طلبك','We confirm and prepare it'),t('نتفق معك على الكميات والسعر والتوصيل، ثم نجهّز طلبك بعناية.','We agree on quantities, price and delivery with you, then prepare your order with care.')),
+ (t('اختر ما تحب','Pick what you like'),t('تصفّح الثمار والمؤونة والشتلات، واجمع ما تحب في قائمة طلبك.','Browse fresh fruit, pantry goods and saplings, and gather your favourites in one selection.')),
+ (t('أرسلها عبر واتساب','Send it on WhatsApp'),t('تتحوّل قائمة طلبك إلى رسالة جاهزة، راجعها وأرسلها حين تشاء.','Your selection becomes a WhatsApp message. Review it and send it when you are ready.')),
+ (t('نؤكد ونجهّز طلبك','We confirm and prepare your order'),t('نتفق معك على الكميات والسعر والتوصيل، ثم نجهّز طلبك بعناية.','We agree on quantities, price and delivery with you, then prepare your order with care.')),
  ]))
 
  return f'''<!DOCTYPE html>
@@ -142,11 +155,11 @@ def build(en=False):
  <link rel="canonical" href="https://alnaderia.com/{'en/' if en else ''}">
  <link rel="alternate" hreflang="ar" href="https://alnaderia.com/"><link rel="alternate" hreflang="en" href="https://alnaderia.com/en/"><link rel="alternate" hreflang="x-default" href="https://alnaderia.com/">
  <link rel="icon" href="{base}favicon.svg" type="image/svg+xml">
- <meta property="og:type" content="website"><meta property="og:title" content="{title}"><meta property="og:description" content="{escape(desc)}"><meta property="og:url" content="https://alnaderia.com/{'en/' if en else ''}"><meta property="og:image" content="https://alnaderia.com/assets/og.png"><meta property="og:locale" content="{'en_US' if en else 'ar_SA'}"><meta name="twitter:card" content="summary_large_image">
- <link rel="preload" href="{base}assets/fonts/ibm-plex-sans-arabic-{'400-normal-latin' if en else '400-normal-arabic'}.woff2" as="font" type="font/woff2" crossorigin>
- <link rel="preload" href="{base}assets/fonts/ibm-plex-sans-arabic-{'600-normal-latin' if en else '600-normal-arabic'}.woff2" as="font" type="font/woff2" crossorigin>
- <link rel="preload" href="{base}assets/fig-harvest.webp" as="image" fetchpriority="high">
- <script>document.documentElement.classList.replace('no-js','js')</script>
+ <meta property="og:type" content="website"><meta property="og:title" content="{title}"><meta property="og:description" content="{escape(desc)}"><meta property="og:url" content="https://alnaderia.com/{'en/' if en else ''}"><meta property="og:site_name" content="{t('النادرية','Naderia')}"><meta property="og:image" content="https://alnaderia.com/assets/og-{lang}.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{t('شعار النادرية وعنوان: تين عسير الطازج، من غصنه إلى بيتك','Naderia emblem with the line: Fresh Asir figs, from the branch to your home')}"><meta name="twitter:image" content="https://alnaderia.com/assets/og-{lang}.png"><meta property="og:locale" content="{'en_US' if en else 'ar_SA'}"><meta property="og:locale:alternate" content="{'ar_SA' if en else 'en_US'}"><meta name="twitter:card" content="summary_large_image">
+ {'' if en else f'<link rel="preload" href="{base}assets/fonts/readex-pro-arabic-wght.woff2" as="font" type="font/woff2" crossorigin>'}
+ <link rel="preload" href="{base}assets/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" as="image" href="{base}assets/fig-harvest.webp" imagesrcset="{pic('fig-harvest.webp','x').split('srcset="')[1].split('"')[0]}" imagesizes="(min-width:1024px) 612px, (min-width:768px) 52vw, calc(100vw - 32px)" fetchpriority="high">
+ <script>document.documentElement.classList.replace('no-js','js');setTimeout(function(){{var r=document.documentElement;if(!r.classList.contains('is-ready'))r.classList.remove('js')}},3000)</script>
  <link rel="stylesheet" href="{base}assets/fonts.css?v={version('fonts.css')}"><link rel="stylesheet" href="{base}assets/style.css?v={version('style.css')}"><link rel="stylesheet" href="{base}assets/experience.css?v={version('experience.css')}">
  <script src="{base}assets/motion.js?v={version('motion.js')}" defer></script>
  <script src="{base}assets/experience.js?v={version('experience.js')}" defer></script>
@@ -158,66 +171,66 @@ def build(en=False):
  <header class="nav" id="siteHeader"><div class="nav-pill" data-appear>
   <a class="brand" href="#home" aria-label="{name}">{brand}</a>
   <nav class="nav-links" aria-label="{t('التنقل الرئيسي','Main navigation')}">{nav}</nav>
-  <div class="nav-actions"><a class="nav-lang" href="{'../' if en else 'en/'}" lang="{'ar' if en else 'en'}">{t('EN','عربي')}</a><button type="button" class="nav-basket" data-order="" aria-label="{t('افتح قائمة طلبك','Open your selection')}">{icon('bag')}<span class="cart-count" data-cart-count>0</span></button><button type="button" class="nav-toggle" id="menuBtn" aria-controls="mobileNav" aria-expanded="false" aria-label="{t('فتح القائمة','Open menu')}"><span></span><span></span></button></div>
+  <div class="nav-actions"><a class="nav-lang" href="{'../' if en else 'en/'}" lang="{'ar' if en else 'en'}">{t('EN','عربي')}</a><button type="button" class="nav-basket" data-order="" aria-label="{t('فتح قائمة طلبك','Open your selection')}">{icon('bag')}<span class="cart-count" data-cart-count aria-hidden="true">0</span></button><button type="button" class="nav-toggle" id="menuBtn" aria-controls="mobileNav" aria-expanded="false" aria-label="{t('فتح القائمة','Open menu')}"><span></span><span></span></button></div>
  </div></header>
- <nav class="menu-panel" id="mobileNav" aria-label="{t('قائمة الجوال','Mobile navigation')}"><div class="menu-links">{menu_links}</div><div class="menu-foot" style="--i:6"><a class="btn btn-primary" href="#products">{cta}{arrow}</a><a class="menu-lang" href="{'../' if en else 'en/'}" lang="{'ar' if en else 'en'}">{t('English','العربية')}</a></div></nav>
+ <nav class="menu-panel" id="mobileNav" aria-label="{t('قائمة التنقل','Mobile navigation')}"><div class="menu-links">{menu_links}</div><div class="menu-foot" style="--i:6"><a class="btn btn-primary" href="#products">{cta}{arrow}</a><a class="menu-lang" href="{'../' if en else 'en/'}" lang="{'ar' if en else 'en'}">{t('English','العربية')}</a></div></nav>
  <main id="main">
   <section class="hero" id="home" aria-labelledby="heroTitle">
    <div class="container hero-copy">
-    <p class="badge" data-appear><span class="live-dot"></span>{t('مزرعة ومشاتل النادرية · أحد رفيدة، عسير','Naderia Farm and Nurseries · Ahad Rafidah, Asir')}</p>
+    <p class="badge" data-appear><img class="badge-mark" src="{base}favicon.svg" alt="" width="21" height="14">{t('مزرعة ومشاتل النادرية · أحد رفيدة، عسير','Naderia Farm &amp; Nurseries · Ahad Rafidah, Asir')}</p>
     <h1 id="heroTitle" class="hero-title"><span class="line" data-appear>{t('تين عسير الطازج،','Fresh Asir figs,')}</span> <span class="line" data-appear>{t('من غصنه إلى بيتك','from the branch to your home')}</span></h1>
-    <p class="hero-sub" data-appear>{t('تين وقطين وعجينة تين وشتلات من مزرعتنا في الفرعين بأحد رفيدة. اختر ما تحب، ونرتّب معك الطلب مباشرة عبر واتساب.','Fresh figs, dried figs, fig paste and saplings from our farm in Al Far’ayn, Ahad Rafidah. Choose what you like and arrange your order with the farm on WhatsApp.')}</p>
+    <p class="hero-sub" data-appear>{t('تين وقطين وعجينة تين وشتلات من مزرعتنا في <span class="nw">الفرعين بأحد رفيدة</span>. اختر ما تحب، ونرتّب معك الطلب مباشرة عبر واتساب.','Fresh figs, dried figs, fig paste and saplings from our farm in <span class="nw">Al Far’ayn, Ahad Rafidah</span>. Choose what you like, and we will arrange your order with you directly on WhatsApp.')}</p>
     <div class="hero-cta" data-appear><a class="btn btn-primary" href="#products">{cta}{arrow}</a></div>
-    <p class="hero-proof" data-appear><span class="proof-mark">{icon('plant')}</span><span>{t('تتواصل مباشرة مع المزرعة · يرعاها مؤسسها أبو عبدالكريم','Talk directly with the farm · cared for by its founder, Abu Abdulkarim')}</span></p>
+    <p class="hero-proof" data-appear><span class="proof-mark">{icon('plant')}</span><span>{t('تتواصل مباشرة مع المزرعة · أسسها أبو عبدالكريم','Talk directly with the farm · Founded by Abu Abdulkarim')}</span></p>
    </div>
    <div class="container hero-stage">
-    <figure class="hero-card hero-side ph-wrap" style="--d:.5s"><img class="ph" src="{base}assets/fig-nursery.webp" alt="{t('صورة تعبيرية لشتلة تين في أصيص فخاري','Illustrative photograph of a fig sapling in a terracotta pot')}" width="1024" height="1536" decoding="async"><figcaption class="chip">{icon('plant')}{t('شتلات وعُقل','Saplings and cuttings')}</figcaption></figure>
-    <figure class="hero-card hero-main ph-wrap" style="--d:.42s"><img class="ph" src="{base}assets/fig-harvest.webp" alt="{t('صورة تعبيرية لثمار تين ناضجة في وعاء فخاري بين أوراق التين','Illustrative photograph of ripe figs in a handmade bowl among fig leaves')}" width="1536" height="1024" fetchpriority="high" decoding="async">
-     <figcaption class="chip chip-float chip-a"><span class="live-dot"></span>{t('قطف وفرز يدوي','Picked and sorted by hand')}</figcaption>
-     <span class="chip chip-float chip-b">{icon('pin')}{t('الفرعين · أحد رفيدة','Al Far’ayn · Ahad Rafidah')}</span>
+    <figure class="hero-card hero-side ph-wrap" style="--d:.5s"><img class="ph" {pic('fig-nursery.webp','(min-width:1024px) 280px, 23vw')} alt="{t('صورة تعبيرية لشتلة تين في أصيص فخاري','Illustrative image of a fig sapling in a terracotta pot')}" width="1024" height="1536" loading="lazy" decoding="async"><figcaption class="chip">{icon('plant')}{t('شتلات وعُقل','Saplings and cuttings')}</figcaption><span class="photo-note">{t('صورة تعبيرية','Illustrative image')}</span></figure>
+    <figure class="hero-card hero-main ph-wrap" style="--d:.2s"><img class="ph" {pic('fig-harvest.webp','(min-width:1024px) 612px, (min-width:768px) 52vw, calc(100vw - 32px)')} alt="{t('صورة تعبيرية لثمار تين ناضجة في وعاء فخاري بين أوراق التين','Illustrative image of ripe figs in a handmade bowl among fig leaves')}" width="1536" height="1024" fetchpriority="high" decoding="async">
+     <figcaption class="chip chip-float chip-a">{icon('hand')}{t('قطف وفرز يدوي','Picked and sorted by hand')}</figcaption>
+     <span class="chip chip-float chip-b">{icon('whatsapp')}{t('طلبك عبر واتساب','Order on WhatsApp')}</span>
      <span class="photo-note">{t('صورة تعبيرية','Illustrative image')}</span></figure>
-    <figure class="hero-card hero-side ph-wrap" style="--d:.58s"><img class="ph" src="{base}assets/fig-pantry.webp" alt="{t('صورة تعبيرية لقطين وعجينة تين على لوح خشبي','Illustrative photograph of dried figs and fig paste on a wooden board')}" width="1536" height="1024" decoding="async"><figcaption class="chip">{icon('leaf')}{t('قطين وعجينة تين','Dried figs and fig paste')}</figcaption></figure>
+    <figure class="hero-card hero-side ph-wrap" style="--d:.58s"><img class="ph" {pic('fig-pantry.webp','(min-width:1024px) 560px, 46vw')} loading="lazy" alt="{t('صورة تعبيرية لقطين وعجينة تين على لوح خشبي','Illustrative image of dried figs and fig paste on a wooden board')}" width="1536" height="1024" decoding="async"><figcaption class="chip">{icon('leaf')}{t('قطين وعجينة تين','Dried figs and fig paste')}</figcaption><span class="photo-note">{t('صورة تعبيرية','Illustrative image')}</span></figure>
    </div>
   </section>
   <section class="ticker" aria-label="{t('ما تجود به النادرية','What Naderia grows')}"><div class="ticker-track"><ul class="ticker-set">{ticker_set}</ul><ul class="ticker-set" aria-hidden="true">{ticker_set}</ul></div></section>
   <section class="section why" id="why" aria-labelledby="whyTitle"><div class="container">
-   <div class="section-head reveal"><p class="eyebrow">{t('لماذا النادرية','Why Naderia')}</p><h2 id="whyTitle">{t('من المزرعة إليك،<br>بلا وسيط.','From our farm to you,<br>with no one in between.')}</h2><p class="lead">{t('تتحدث مع أهل المزرعة مباشرة. هم من يقطفون، وهم من يردّون على رسالتك.','You talk to the people who grow it. The same hands that pick the figs answer your message.')}</p></div>
+   <div class="section-head reveal"><p class="eyebrow">{t('لماذا النادرية','Why Naderia')}</p><h2 id="whyTitle">{t('من المزرعة إليك،<br>بلا وسيط.','From our farm to you,<br>with no one in between.')}</h2><p class="lead">{t('تراسل المزرعة مباشرة، ويرد عليك فريقها بنفسه. لا وسيط ولا متجر بينكما.','You message the farm directly, and the farm team answers you. No shop and no middleman in between.')}</p></div>
    {bento}
   </div></section>
   <section class="tagline" aria-label="{t('وعد النادرية','The Naderia promise')}"><div class="container"><p class="tagline-text" data-words>{tagline}</p></div></section>
   <section class="section products" id="products" aria-labelledby="productsTitle"><div class="container">
-   <div class="section-head section-head-split reveal"><div><p class="eyebrow">{t('خيرات النادرية','The Naderia harvest')}</p><h2 id="productsTitle">{t('للمائدة والضيافة،<br>ولركنٍ أخضر في بيتك.','For your table, your guests<br>and a greener corner at home.')}</h2></div><p class="lead">{t('اختر ما تحب وأضفه إلى قائمتك. نؤكد الأسعار والأحجام والتوفر معك قبل الطلب.','Add what you like to your selection. Prices, sizes and availability are confirmed with you before ordering.')}</p></div>
+   <div class="section-head section-head-split reveal"><div><p class="eyebrow">{t('خيرات النادرية','The Naderia harvest')}</p><h2 id="productsTitle">{t('للمائدة والضيافة،<br>ولركنٍ أخضر في بيتك.','For your table, your guests and a greener corner at home.')}</h2></div><p class="lead">{t('اختر ما تحب وأضفه إلى قائمة طلبك. نؤكد الأسعار والأحجام والتوفر معك قبل الطلب.','Add what you like to your selection. We confirm prices, sizes and availability with you before you order.')}</p></div>
    <div class="catalog-bar reveal"><div class="filters" role="group" aria-label="{t('تصفية المنتجات','Filter products')}">{filters}</div><span id="productCount" class="product-count" role="status" aria-live="polite">{t('٦ منتجات','6 products')}</span></div>
    <div class="product-grid">{cards}</div>
-   <p class="catalog-note">{icon('info')}<span>{t('كل موسم له خيراته. الصور تعبيرية وليست تصويرًا للمنتجات الفعلية.','Every season brings something different. Images are illustrative, not photographs of the actual products.')}</span></p>
+   <p class="catalog-note">{icon('info')}<span>{t('لكل موسم خيراته. الصور تعبيرية وليست تصويرًا للمنتجات الفعلية.','Every season brings something different. Images are illustrative, not photographs of the actual products.')}</span></p>
   </div></section>
   <section class="section story" id="story" aria-labelledby="storyTitle"><div class="container story-grid">
-   <figure class="story-media reveal-card ph-wrap"><img class="ph" src="{base}assets/fig-pantry.webp" alt="{t('صورة تعبيرية لقطين في وعاء فخاري على قماش كتان','Illustrative photograph of dried figs in a ceramic bowl on linen')}" width="1536" height="1024" loading="lazy" decoding="async"><figcaption class="chip">{icon('pin')}{t('عسير، المملكة العربية السعودية','Asir, Saudi Arabia')}</figcaption></figure>
-   <div class="story-copy reveal"><p class="eyebrow">{t('حكايتنا','Our story')}</p><h2 id="storyTitle">{t('نحن من هذه الأرض،<br>وهذه الأرض منّا.','This is our land,<br>and this is our story.')}</h2>
-    <p>{t('في الفرعين، بين مرتفعات أحد رفيدة، تنمو حكايتنا مع شجرة التين. نعتني بها من أول ورقة إلى آخر ثمرة، ونؤمن أن الجودة تبدأ من صبر المزارع وحبّه لأرضه.','In Al Far’ayn, among the highlands of Ahad Rafidah, our story grows alongside the fig tree. From its first leaf to its last fruit, we believe good produce begins with patience and a love of the land.')}</p>
+   <figure class="story-media reveal-card ph-wrap"><img class="ph" {pic('fig-pantry.webp','(min-width:1024px) 640px, calc(100vw - 32px)')} alt="{t('صورة تعبيرية لقطين في وعاء فخاري على قماش كتان','Illustrative image of dried figs in a ceramic bowl on linen')}" width="1536" height="1024" loading="lazy" decoding="async"><span class="photo-note">{t('صورة تعبيرية','Illustrative image')}</span></figure>
+   <div class="story-copy reveal"><p class="eyebrow">{t('حكايتنا','Our story')}</p><h2 id="storyTitle">{t('نحن من هذه الأرض،<br>وهذه الأرض منّا.','We come from this land,<br>and it is part of us.')}</h2>
+    <p>{t('في الفرعين، بين مرتفعات أحد رفيدة، تنمو حكايتنا مع شجرة التين. نعتني بها من أول ورقة إلى آخر ثمرة، ونؤمن أن الجودة تبدأ من صبر المزارع وحبّه لأرضه.','In Al Far’ayn, among the highlands of Ahad Rafidah, our story grows alongside the fig tree. We care for each tree from its first leaf to its last fruit, and we believe good fruit begins with a farmer’s patience and love for the land.')}</p>
     <p>{t('النادرية مزرعة ومشتل، ومساحة نشاركك فيها ما نحب: ثمارًا طيبة، وغرسًا ينمو معك، وتفاصيل تحمل روح الجنوب.','Naderia is a farm, a nursery, and a place to share what we love: good fruit, plants that grow with you, and a little of the spirit of the south.')}</p>
-    <ul class="values">{''.join(f'<li>{icon("check")}<span>{v}</span></li>' for v in [t('عناية من الجذور','Care from the roots'),t('قطف وفرز يدوي','Picked and sorted by hand'),t('هوية جنوبية أصيلة','An authentic Asir story')])}</ul>
-    <div class="founder"><span class="founder-mark">{icon('plant')}</span><span><b>{t('عبدالله عايض أبو درمان القحطاني','Abdullah Ayed Abu Darman Al Qahtani')}</b><small>{t('أبو عبدالكريم · مؤسس النادرية','Abu Abdulkarim · Founder of Naderia')}</small></span></div>
+    <ul class="values">{''.join(f'<li>{icon("check")}<span>{v}</span></li>' for v in [t('عناية من الجذور','Care from the roots'),t('قطف وفرز يدوي','Picked and sorted by hand'),t('هوية جنوبية أصيلة','Proudly from Asir')])}</ul>
+    <div class="founder"><span class="founder-mark"><img src="{base}favicon.svg" alt="" width="32" height="21"></span><span><b>{t('عبدالله عايض أبو درمان القحطاني','Abdullah Ayedh Abu Darman Al Qahtani')}</b>{'<small lang="ar" dir="rtl">عبدالله عايض أبو درمان القحطاني</small>' if en else ''}<small>{t('أبو عبدالكريم · مؤسس النادرية','Abu Abdulkarim · Founder of Naderia')}</small></span></div>
    </div>
   </div></section>
   <section class="section nursery" id="nursery" aria-labelledby="nurseryTitle"><div class="container"><div class="nursery-panel reveal-card">
-   <div class="nursery-copy"><p class="eyebrow">{t('المشتل','The nursery')}</p><h2 id="nurseryTitle">{t('خذ من حكايتنا،<br>وازرع حكايتك.','Take a little of our story,<br>and grow your own.')}</h2><p>{t('أول شجرة في حديقتك، أو إضافة جديدة لمزرعتك؟ شتلات وعُقل النادرية بداية جميلة، ونساعدك تختار حسب منطقتك ومكان الزراعة.','Your first garden tree, or a new addition to your farm? Our saplings and cuttings are a lovely place to start, and we help you choose for your region and planting space.')}</p>
-    <button type="button" class="btn btn-ghost" data-order="seedling">{icon('plant')}{t('أضف شتلة إلى طلبك','Add a sapling to your selection')}</button></div>
-   <figure class="nursery-media ph-wrap"><img class="ph" src="{base}assets/fig-nursery.webp" alt="{t('صورة تعبيرية لشتلة تين في أصيص فخاري','Illustrative photograph of a fig sapling in a terracotta pot')}" width="1024" height="1536" loading="lazy" decoding="async"><span class="photo-note">{t('صورة تعبيرية','Illustrative image')}</span></figure>
+   <div class="nursery-copy"><p class="eyebrow">{t('المشتل','The nursery')}</p><h2 id="nurseryTitle">{t('خذ من حكايتنا،<br>وازرع حكايتك.','Take a little of our story,<br>and grow your own.')}</h2><p>{t('أول شجرة في حديقتك، أو إضافة جديدة لمزرعتك؟ شتلات وعُقل النادرية بداية جميلة، ونساعدك في الاختيار بحسب منطقتك ومكان الزراعة.','The first tree in your garden, or a new addition to your farm? Our saplings and cuttings are a lovely place to start, and we will help you choose for your region and planting space.')}</p>
+    <button type="button" class="btn btn-ghost" data-order="seedling">{icon('plant')}{t('أضف شتلة إلى قائمة طلبك','Add a sapling to your selection')}</button></div>
+   <figure class="nursery-media ph-wrap"><img class="ph" {pic('fig-nursery.webp','(min-width:1024px) 560px, calc(100vw - 48px)')} alt="{t('صورة تعبيرية لشتلة تين في أصيص فخاري','Illustrative image of a fig sapling in a terracotta pot')}" width="1024" height="1536" loading="lazy" decoding="async"><span class="photo-note">{t('صورة تعبيرية','Illustrative image')}</span></figure>
   </div></div></section>
   <section class="section how" id="how" aria-labelledby="howTitle"><div class="container">
-   <div class="section-head section-head-center reveal"><p class="eyebrow">{t('كيف تطلب','How ordering works')}</p><h2 id="howTitle">{t('ثلاث خطوات،<br>وخيراتنا في طريقها إليك.','Three steps,<br>and your harvest is on its way.')}</h2></div>
+   <div class="section-head section-head-center reveal"><p class="eyebrow">{t('كيف تطلب','How ordering works')}</p><h2 id="howTitle">{t('ثلاث خطوات،<br>ورسالة واحدة تكفي.','Three steps,<br>and one message does it.')}</h2></div>
    <ol class="steps">{steps}</ol>
   </div></section>
   <section class="section faq" id="faq" aria-labelledby="faqTitle"><div class="container faq-grid">
-   <div class="faq-intro reveal"><p class="eyebrow">{t('قبل أن تسأل','Before you ask')}</p><h2 id="faqTitle">{t('كل ما يهمك،<br>بكل وضوح.','Good questions,<br>clear answers.')}</h2><p class="lead">{t('باقي في بالك سؤال؟ نحن هنا، ويسعدنا الحديث معك.','Still have something on your mind? We are always happy to chat.')}</p><a class="text-link" href="{wa}" target="_blank" rel="noopener">{icon('whatsapp')}<span>{t('اسألنا على واتساب','Ask us on WhatsApp')}</span>{icon('arrow-out','dir-out')}</a></div>
+   <div class="faq-intro reveal"><p class="eyebrow">{t('قبل أن تسأل','Before you ask')}</p><h2 id="faqTitle">{t('كل ما يهمك،<br>بكل وضوح.','Good questions,<br>clear answers.')}</h2><p class="lead">{t('بقي في بالك سؤال؟ نحن هنا، ويسعدنا الحديث معك.','Still have something on your mind? We are here and happy to talk.')}</p><a class="text-link" href="{wa}" target="_blank" rel="noopener">{icon('whatsapp')}<span>{t('اسألنا على واتساب','Ask us on WhatsApp')}</span>{icon('arrow-out','dir-out')}</a></div>
    <div class="faq-list reveal">{faq_markup}</div>
   </div></section>
   <section class="section final" id="contact" aria-labelledby="contactTitle"><div class="container"><div class="final-panel reveal">
    <img class="final-mark" src="{base}favicon.svg" alt="" width="84" height="52">
    <p class="eyebrow">{t('يا مرحبًا، عدد ما أثمر الغصن','There is always a warm welcome')}</p>
-   <h2 id="contactTitle">{t('الخير يجمعنا،<br>والتواصل يقرّبنا.','Good things bring us together,<br>so let’s stay close.')}</h2>
-   <p class="lead">{t('بدون تسجيل وبدون دفع في الموقع. نؤكد التوفر والسعر والتوصيل معك قبل أي طلب.','No account and nothing paid on this site. We confirm availability, price and delivery with you before any order.')}</p>
+   <h2 id="contactTitle">{t('اختر ما تحب،<br>ونرتّب معك الباقي عبر واتساب.','Choose what you like,<br>and we will arrange the rest on WhatsApp.')}</h2>
+   <p class="lead">{t('بلا تسجيل ولا دفع في الموقع. نؤكد التوفر والسعر والتوصيل معك قبل أي طلب.','No account and nothing paid on this site. We confirm availability, price and delivery with you before any order.')}</p>
    <div class="final-cta"><a class="btn btn-primary" href="#products">{cta}{arrow}</a></div>
    <div class="final-meta"><a href="tel:+966503184880">{icon('phone')}<bdi dir="ltr">050 318 4880</bdi></a><a href="{visit}" target="_blank" rel="noopener">{icon('pin')}<span>{t('نسّق زيارتك للمزرعة','Arrange a farm visit')}</span></a><span>{icon('leaf')}{t('الفرعين · أحد رفيدة · عسير','Al Far’ayn · Ahad Rafidah · Asir')}</span></div>
   </div></div></section>
@@ -226,14 +239,27 @@ def build(en=False):
   <div class="footer-main"><div class="footer-brand"><a class="brand" href="#home" aria-label="{name}">{brand}</a><p>{t('أصالة الأرض، وجودة الثمر، وعبق الجنوب.','Good land, good fruit and a little of the south.')}</p></div>
    <nav class="footer-links" aria-label="{t('روابط الموقع','Site links')}"><a href="#products">{t('الخيرات','Harvest')}</a><a href="#story">{t('حكايتنا','Our story')}</a><a href="#faq">{t('الأسئلة','Questions')}</a><a href="privacy.html">{t('الخصوصية','Privacy')}</a><a href="{'../' if en else 'en/'}" lang="{'ar' if en else 'en'}">{t('English','العربية')}</a></nav>
    <a class="back-top" href="#home" aria-label="{t('العودة إلى أعلى الصفحة','Back to top')}">{icon('arrow','up-arrow')}</a></div>
-  <div class="footer-bottom"><span>© <span id="year">2026</span> {name}. {t('بكل حب، من عسير.','With love, from Asir.')}</span><span>{t('لا نستخدم أدوات تتبّع أو إعلانات.','No trackers, no ads.')}</span></div>
+  <div class="footer-bottom"><span>© <span id="year">2026</span> {name}. {t('بكل حب، من عسير.','With love, from Asir.')}</span><span class="footer-note">{t('لا نستخدم أدوات تتبّع أو إعلانات.','No trackers, no ads.')}<button type="button" class="motion-toggle" data-motion-toggle aria-pressed="false">{icon('pause')}<span>{t('إيقاف الحركة','Pause motion')}</span></button></span></div>
  </div></footer>
  <a class="wa-float" href="{wa}" target="_blank" rel="noopener" aria-label="{t('تواصل عبر واتساب','Chat on WhatsApp')}">{icon('whatsapp')}</a>
  <noscript><div class="noscript-note">{t('يمكنك تصفح جميع المنتجات والتواصل مباشرة عبر واتساب. فعّل JavaScript لتصفية المنتجات وتجميع قائمة الطلب.','Browse every product and contact us directly on WhatsApp. Enable JavaScript to filter products and build a selection.')} <a href="{wa}">{t('تواصل معنا','Contact us')}</a></div><style>[data-order],[data-details],.filters,.nav-toggle,.menu-panel{{display:none!important}}.nav-links{{display:flex!important}}</style></noscript>
 </body></html>
 '''
 
+def stamp_static_pages():
+ # privacy.html, en/privacy.html and 404.html are hand written; keep their stylesheet links cache busted.
+ import re
+ for name in ('privacy.html','en/privacy.html','404.html'):
+  path=ROOT/name
+  html=path.read_text(encoding='utf-8')
+  for css in ('fonts.css','pages.css'):
+   digest=hashlib.sha256((ROOT/'assets'/css).read_bytes()).hexdigest()[:10]
+   html=re.sub(rf'/assets/{css}(\?v=[^"]*)?"',f'/assets/{css}?v={digest}"',html)
+  path.write_text(html,encoding='utf-8')
+
 if __name__=='__main__':
  for en,path in [(False,ROOT/'index.html'),(True,ROOT/'en'/'index.html')]:
   path.write_text(build(en),encoding='utf-8')
   print(f'Built {path.relative_to(ROOT)}')
+ stamp_static_pages()
+ print('Stamped privacy and 404 stylesheet versions')
